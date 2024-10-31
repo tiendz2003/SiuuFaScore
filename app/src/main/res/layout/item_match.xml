@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    >
+
+    <TextView
+        android:id="@+id/homeTeamTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Manchester United"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/homeTeam"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/scoreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@drawable/score_board"
+        android:text="0:0"
+        android:textStyle="bold"
+        android:fontFamily="@font/premierleague_bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/awayTeamTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Manchester City"
+        android:textAlignment="textEnd"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/awayTeam"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/statusStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Chưa bắt đầu"
+        android:textSize="11sp"
+        android:visibility="visible"
+        android:background="@drawable/start"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scoreTextView" />
+    <TextView
+        android:id="@+id/statusInplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Đang diễn ra"
+        android:visibility="gone"
+        android:textSize="11sp"
+        android:background="@drawable/inplay"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scoreTextView" />
+    <TextView
+        android:id="@+id/statusFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Kết thúc"
+        android:visibility="gone"
+        android:textSize="11sp"
+        android:background="@drawable/finish"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scoreTextView" />
+
+    <ImageView
+        android:id="@+id/homeTeam"
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:scaleType="fitCenter"
+        android:background="@drawable/item_club"
+        android:layout_marginEnd="10dp"
+        android:padding="2dp"
+        app:layout_constraintEnd_toStartOf="@id/scoreTextView"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/homeTeamTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_football" />
+
+    <ImageView
+        android:id="@+id/awayTeam"
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:scaleType="fitCenter"
+        android:layout_marginStart="10dp"
+        android:padding="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/item_club"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/scoreTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_football" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

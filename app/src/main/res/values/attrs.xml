@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="color_black" format="reference" />
+    <attr name="color_white" format="reference" />
+
+    <attr name="color_primary_variant" format="reference" />
+    <attr name="color_secondary_variant" format="reference" />
+    <attr name="color_primary_default" format="reference" />
+    <attr name="color_secondary_default" format="reference" />
+    <attr name="color_primary_highlight" format="reference" />
+    <attr name="color_secondary_highlight" format="reference" />
+    <attr name="on_color_on_color_primary" format="reference" />
+    <attr name="surface_surface_1" format="reference" />
+    <attr name="surface_surface_0" format="reference" />
+    <attr name="surface_surface_2" format="reference" />
+    <attr name="on_surface_on_surface_lv_1" format="reference" />
+    <attr name="on_color_on_color_secondary" format="reference" />
+    <attr name="on_surface_on_surface_lv_2" format="reference" />
+    <attr name="on_surface_on_surface_lv_3" format="reference" />
+    <attr name="on_surface_on_surface_lv_4" format="reference" />
+    <attr name="status_error" format="reference" />
+    <attr name="status_alert" format="reference" />
+    <attr name="status_success" format="reference" />
+    <attr name="specific_live" format="reference" />
+
+
+</resources>

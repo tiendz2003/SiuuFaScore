@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.detailmatch.DetailMatchFragment"
+    android:background="@color/white">
+
+    <!-- ScrollView containing all content for scrolling -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <!-- Display section for teams and score -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/result"
+                android:layout_width="match_parent"
+                android:layout_height="111dp"
+              >
+
+                <!-- Home team -->
+                <LinearLayout
+                    android:id="@+id/homeTeam"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/matchScore"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!-- Home team info -->
+                    <LinearLayout
+                        android:id="@+id/homeTeamScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/detail_round_home"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/homeTeamLogo"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:contentDescription="@string/premier_league"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/premier_league_idhcr6mt55_6" />
+
+                        <TextView
+                            android:id="@+id/homeTeamName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="8dp"
+                            android:text="Home Team"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <!-- Match score -->
+
+                <!-- Away team -->
+
+                <TextView
+                    android:id="@+id/matchScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/score_board"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="0 - 0"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/awayTeam"
+                    app:layout_constraintStart_toEndOf="@id/homeTeam"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDateTime"
+                    app:layout_constraintVertical_bias="0.228" />
+
+                <LinearLayout
+                    android:id="@+id/awayTeam"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/matchScore"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <!-- Away team info -->
+                    <LinearLayout
+                        android:id="@+id/awayTeamScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/detail_round_away"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/awayTeamName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="8dp"
+                            android:text="Away Team"
+                            android:textAlignment="textEnd"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/awayTeamLogo"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:contentDescription="@string/premier_league"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/premier_league_idhcr6mt55_6" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+                <!-- Thời gian và địa điểm -->
+
+                <TextView
+                    android:id="@+id/tvDateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="7dp"
+                    android:gravity="center"
+                    android:text="18/10/2024"
+                    app:layout_constraintEnd_toStartOf="@+id/awayTeam"
+                    app:layout_constraintStart_toEndOf="@+id/homeTeam"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="20dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/clock"
+                    app:layout_constraintEnd_toStartOf="@+id/tvDateTime"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Match details like time, location -->
+            <TextView
+                android:id="@+id/matchDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/highlight"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:paddingTop="8dp"
+                android:paddingBottom="16dp" />
+
+            <!-- YouTube Player for match video -->
+            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                android:id="@+id/youtube_player_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+            <!-- Other detailed info like players, events -->
+            <TextView
+                android:id="@+id/matchEventsHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sự kiện trận đấu"
+                android:textColor="@color/black"
+                android:fontFamily="@font/premierleague_bold"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:paddingTop="16dp" />
+
+            <!-- RecyclerView for match events -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/eventsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Match statistics info (e.g., possession, shots) -->
+            <TextView
+                android:id="@+id/matchStatsHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="Thống kê trận đấu"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/statsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- ProgressBar shown while loading data -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

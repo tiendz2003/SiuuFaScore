@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_tournaments_football"
+        android:icon="@drawable/icon_football"
+        android:title="@string/football" />
+
+    <item
+        android:id="@+id/navigation_tournaments_basketball"
+        android:icon="@drawable/icon_basketball"
+        android:title="@string/basketball" />
+
+    <item
+        android:id="@+id/navigation_tournaments_american_football"
+        android:icon="@drawable/icon_american_football"
+        android:title="@string/american_football" />
+</menu>

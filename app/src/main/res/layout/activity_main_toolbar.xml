@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#37003D"
+    android:id="@+id/toolbar">
+
+    <ImageView
+        android:id="@+id/sofascoreLogo"
+        android:layout_width="158dp"
+        android:layout_height="39dp"
+        android:layout_gravity="start"
+        android:layout_margin="16dp"
+        android:src="@drawable/sofascore_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+     />
+
+    <ImageView
+        android:id="@+id/settingsIcon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:padding="8dp"
+        android:layout_gravity="end"
+        android:layout_margin="4dp"
+        android:src="@drawable/ic_settings"
+        app:tint="@color/white"
+        app:layout_constraintEnd_toStartOf="@id/tournamentsIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/tournamentsIcon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:padding="8dp"
+        android:layout_gravity="end"
+        android:layout_margin="4dp"
+        android:src="@drawable/ic_trophy"
+        app:tint="@color/white"
+        app:layout_constraintEnd_toStartOf="@id/favouritesIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/favouritesIcon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:padding="8dp"
+        android:layout_gravity="end"
+        android:layout_margin="4dp"
+        android:src="@drawable/ic_star_fill"
+        app:tint="@color/white"
+        app:layout_constraintEnd_toStartOf="@id/settingsIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/searchIcon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:padding="8dp"
+        android:layout_gravity="end"
+        android:layout_margin="4dp"
+        android:src="@drawable/ic_search"
+        app:tint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.appcompat.widget.Toolbar>

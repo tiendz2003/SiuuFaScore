@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">MiniLiveScore</string>
+    <string name="today">Chào buổi sáng,</string>
+    <string name="event">Vòng 8</string>
+    <string name="football">Bóng đá</string>
+    <string name="basketball">Bóng rổ</string>
+    <string name="american_football">Bóng bầu dục</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="premier_league">Premier League</string>
+    <string name="serie_a">Serie A</string>
+    <string name="laliga">Laliga</string>
+    <string name="notification">Không có sự kiện nào</string>
+    <string name="highlight">Highlight trận đấu: </string>
+    <string name="morning">Chào buổi sáng, </string>
+    <string name="noon">Chào buổi chiều, </string>
+    <string name="night">Chào buổi tối, </string>
+</resources>

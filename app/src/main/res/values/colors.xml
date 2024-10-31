@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="color_primary_variant">#1327ba</color>
+    <color name="color_secondary_variant">#dddbc9</color>
+    <color name="color_primary_default">#37003D</color>
+    <color name="end_color">#850892</color>
+    <color name="color_secondary_default">#f0eedf</color>
+    <color name="color_primary_highlight">#e1edfe</color>
+    <color name="color_secondary_highlight">#f7f6ef</color>
+    <color name="on_color_on_color_primary">#ffffff</color>
+    <color name="surface_surface_1">#ffffff</color>
+    <color name="surface_surface_0">#eff3f8</color>
+    <color name="surface_surface_2">#33c0cfe4</color>
+    <color name="on_surface_on_surface_lv_1">#121212</color>
+    <color name="on_color_on_color_secondary">#99ffffff</color>
+    <color name="on_surface_on_surface_lv_2">#66121212</color>
+    <color name="on_surface_on_surface_lv_3">#33121212</color>
+    <color name="on_surface_on_surface_lv_4">#19121212</color>
+    <color name="status_error">#ea4545</color>
+    <color name="status_alert">#d8b127</color>
+    <color name="status_success">#1da86d</color>
+    <color name="specific_live">#e93030</color>
+
+    <color name="color_primary_variant_dark">#afbeff</color>
+    <color name="color_secondary_variant_dark">#404039</color>
+    <color name="color_primary_default_dark">#849afd</color>
+    <color name="color_secondary_default_dark">#3a3a39</color>
+    <color name="color_primary_highlight_dark">#2d385c</color>
+    <color name="color_secondary_highlight_dark">#171616</color>
+    <color name="on_color_on_color_primary_dark">#ffffff</color>
+    <color name="surface_surface_1_dark">#21242D</color>
+    <color name="surface_surface_0_dark">#101114</color>
+    <color name="surface_surface_2_dark">#66000000</color>
+    <color name="on_surface_on_surface_lv_1_dark">#ffffff</color>
+    <color name="on_color_on_color_secondary_dark">#99ffffff</color>
+    <color name="on_surface_on_surface_lv_2_dark">#66ffffff</color>
+    <color name="on_surface_on_surface_lv_3_dark">#33ffffff</color>
+    <color name="on_surface_on_surface_lv_4_dark">#19ffffff</color>
+    <color name="status_error_dark">#ea4545</color>
+    <color name="status_alert_dark">#d8b127</color>
+    <color name="status_success_dark">#1da86d</color>
+    <color name="specific_live_dark">#e93030</color>
+
+</resources>
