@@ -2,7 +2,9 @@
 
 This is a simple Sofascore app for Android devices. It allows users to explore sports matches, view team details, tournament
 standings, and player information. It integrates with the Sofascore Demo API to fetch data for https://www.football-data.org/
-Premier League,SeriA,Laliga
+Premier League,SeriA,Laliga.
+
+My project is not complete.But in few months,i will trying to complete it.So stay tuned 🥰🥰🥰
 
 ## Features
 
