@@ -10,7 +10,7 @@ My project is not complete.But in few months,i will trying to complete it.So sta
 
 The app includes the following features:
 
-* Sports Matches: Users can view upcoming and past matches for football, basketball, and American football 
+* Sports Matches: Users can view upcoming and past matches for football(PL,SERIA,LALIGA)
   for the each round/38 rounds 
 * Team Details: Users can explore team information, including their name, logo, country, and current players.
 * Tournament Standings: Users can check tournament standings for various leagues and competitions.
