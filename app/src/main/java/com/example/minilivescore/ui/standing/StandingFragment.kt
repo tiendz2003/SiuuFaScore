@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.minilivescore.MainActivity
@@ -15,11 +16,12 @@ import com.example.minilivescore.data.repository.MatchesViewModelFactory
 import com.example.minilivescore.databinding.FragmentStandingBinding
 import com.example.minilivescore.ui.matches.MatchesViewModel
 import com.example.minilivescore.utils.LiveScoreMiniServiceLocator
+import kotlinx.coroutines.launch
 
 
 class StandingFragment : Fragment() {
     private var _binding : FragmentStandingBinding? = null
-    val binding get() = _binding!!
+    private val binding get() = _binding!!
     private val viewModel:MatchesViewModel by activityViewModels()
     private val adapter:LeaguesStandingAdapter by lazy(LazyThreadSafetyMode.NONE) {
         LeaguesStandingAdapter(Glide.with(this))
@@ -54,7 +56,22 @@ class StandingFragment : Fragment() {
         }
     }
     private fun observeViewModel(){
-        viewModel.standingLeague.observe(viewLifecycleOwner){standing ->
+        //note:Nhớ từng trường hợp của dữ liệu như loading, success, error, thiết lập với StateFlow
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.standingLeague.collect { standing ->
+                val tableList = standing.data?.standings?.flatMap { it.table }
+                binding.swipeRefreshLayout.isRefreshing = false
+                if(standing.data?.standings?.isNotEmpty() == true){
+                    binding.recyclerView.visibility = View.VISIBLE
+                    binding.noEventsTextView.visibility =View.GONE
+                    adapter.submitList(tableList)
+                }else{
+                    binding.recyclerView.visibility = View.GONE
+                    binding.noEventsTextView.visibility = View.VISIBLE
+                }
+            }
+        }
+  /*      viewModel.standingLeague.observe(viewLifecycleOwner){standing ->
             val tableList = standing.standings.flatMap { it.table }
             binding.swipeRefreshLayout.isRefreshing = false
             if(standing.standings.isNotEmpty()){
@@ -65,7 +82,7 @@ class StandingFragment : Fragment() {
                 binding.recyclerView.visibility = View.GONE
                 binding.noEventsTextView.visibility = View.VISIBLE
             }
-        }
+        }*/
         viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             binding.recyclerView.visibility = View.GONE
             binding.noEventsTextView.visibility = View.VISIBLE

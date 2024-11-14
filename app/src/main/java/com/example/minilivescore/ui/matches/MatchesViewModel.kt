@@ -12,6 +12,8 @@ import com.example.minilivescore.data.repository.MatchRepository
 import com.example.minilivescore.utils.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+
 import kotlinx.coroutines.launch
 
 
@@ -22,12 +24,18 @@ class MatchesViewModel (
     private val _matches = MutableLiveData<Resource<LeagueMatches>>()
     val matches :LiveData<Resource<LeagueMatches>> = _matches
 
-    private var _currentLeague = savedStateHandle.getStateFlow("currentLeague","PL")
+    private var _currentLeague =  savedStateHandle.getStateFlow("currentLeague", "PL")
     val currentLeague :StateFlow<String> = _currentLeague
 
     fun setCurrentLeague(league:String){
-        savedStateHandle["currentLeague"] = league
-        fetchMatches(league)
+        if(_currentLeague.value != league){
+            savedStateHandle["currentLeague"] = league
+            Log.d("currentLeague","$league")
+            viewModelScope.launch {
+                fetchMatches(league)
+            }
+        }
+
     }
 
     private val _currentMatchday = MutableStateFlow<Int?>(null)
@@ -56,21 +64,11 @@ class MatchesViewModel (
     val selectedMatchday: StateFlow<Int> = _selectedMatchday
 
     init {
-        //chỉ nhận giá trị phát ra mới nhất của _matchday
- /*       viewModelScope.launch {
-            _matchday
-                .debounce(1000)
-                .collectLatest {
-                    if(it != 0){
-                        fetchMatches(_currentLeague.value,it)
-                    }
-                }
-        }*/
-
         viewModelScope.launch {
             // Khởi tạo giá trị ban đầu cho selectedMatchday nếu chưa có
             if (_selectedMatchday.value == 0) {
-                currentMatchday.collect { currentMatchday ->
+                currentMatchday
+                    .collect { currentMatchday ->
                     currentMatchday?.let {
                         savedStateHandle["selectedMatchday"] = it
                     }
@@ -134,8 +132,8 @@ class MatchesViewModel (
         _matchError.value = null
     }
 
-    private val _standingLeagues = MutableLiveData<LeaguesStanding>()
-    val standingLeague:LiveData<LeaguesStanding> = _standingLeagues
+    private val _standingLeagues = MutableStateFlow<Resource<LeaguesStanding?>>(Resource.Loading())
+    val standingLeague:StateFlow<Resource<LeaguesStanding?>> = _standingLeagues.asStateFlow()
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
@@ -145,12 +143,13 @@ class MatchesViewModel (
             try {
                 val response = repository.getStandingLeagues(id)
                 if(response.isSuccessful){
-                    _standingLeagues.value =response.body()
+                    val data = response.body()
+                    _standingLeagues.value = Resource.Success(data)
                 }else{
                     _error.value = "Error : ${response.code()}"
                 }
             }catch (e:Exception){
-                _error.value = "Error: ${e.message}"
+                _standingLeagues.value = Resource.Error(e.message?:"Đã xảy ra lỗi")
             }
         }
     }

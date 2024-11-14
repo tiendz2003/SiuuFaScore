@@ -37,7 +37,7 @@ class MatchesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        leagueCode = arguments?.getString(LEAGUE_CODE)?:"PL"
+
     }
 
     override fun onCreateView(
@@ -55,11 +55,8 @@ class MatchesFragment : Fragment() {
         setupRecycleView()
         observeViewModel()
         chooseRoundListener()
-        fetchMatchesForCurrentLeague()
+        //fetchMatchesForCurrentLeague()
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        if(savedInstanceState == null){
-            viewModel.fetchMatches(viewModel.currentLeague.value)
-        }
         binding.info.date.text = when(currentHour){
             in 0..11 -> ContextCompat.getString(requireContext(),R.string.morning)
             in 12..17 ->ContextCompat.getString(requireContext(),R.string.noon)
@@ -84,17 +81,18 @@ class MatchesFragment : Fragment() {
         }
     }
     private fun fetchMatchesForCurrentLeague() {
-
-        (activity as? MainActivity)?.let { mainActivity ->
-            when (mainActivity.binding.navViewMain.selectedItemId) {
-                R.id.navigation_matches_football -> viewModel.setCurrentLeague("PL")
-                R.id.navigation_matches_basketball -> viewModel.setCurrentLeague("SA")
-                R.id.navigation_matches_american_football -> viewModel.setCurrentLeague("DA")
-            }
+        viewModel.currentLeague.value.let { leagueCode ->
+            Log.d("currentLeague","$leagueCode")
+            viewModel.fetchMatches(leagueCode)
         }
     }
 
     private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.currentLeague.collect { league ->
+               fetchMatchesForCurrentLeague()
+            }
+        }
         //vòng đấu hiện tại
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.selectedMatchday.collect { currentMatchday ->
@@ -167,12 +165,10 @@ class MatchesFragment : Fragment() {
         super.onDestroyView()
     }
     companion object {
-        private const val LEAGUE_CODE = "league_code"
+
         @JvmStatic
-        fun newInstance(leagueCode:String) = MatchesFragment().apply {
-            arguments = Bundle().apply {
-                putString(LEAGUE_CODE,leagueCode)
-            }
-        }
+        fun newInstance() = MatchesFragment()
+
+
     }
 }

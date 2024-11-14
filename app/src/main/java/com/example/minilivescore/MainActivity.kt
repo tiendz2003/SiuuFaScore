@@ -1,5 +1,6 @@
 package com.example.minilivescore
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -14,10 +15,13 @@ import com.example.minilivescore.utils.LiveScoreMiniServiceLocator
 
 class MainActivity : AppCompatActivity() {
      lateinit var binding: SharedActivityLayoutBinding
+     val repository by lazy {
+         MatchRepository(apiService = LiveScoreMiniServiceLocator.liveScoreApiService)
+     }
 
     private val viewModel: MatchesViewModel by viewModels {
         MatchesViewModelFactory(
-            MatchRepository(apiService = LiveScoreMiniServiceLocator.liveScoreApiService),
+            repository,
             this,
             intent.extras
         )
@@ -34,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbarMain.toolbar)
         setupBottomNavigation()
+        setOnClickListener()
     }
 
 
@@ -59,6 +64,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
+    private fun setOnClickListener() {
+        binding.toolbarMain.searchIcon.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
+        }
+    }
 
 }

@@ -28,7 +28,7 @@ class MatchRepository(
     //Nên khai báo luồng chỉ định ở đây không hardcode chúng với withContext
     private val ioDispatcher:CoroutineDispatcher = Dispatchers.IO
 ) {
-    suspend fun getLeagueMatches(leagueCode: String, round: Int?=null):Resource<LeagueMatches>{
+    suspend fun getLeagueMatches(leagueCode: String, round: Int):Resource<LeagueMatches>{
         return withContext(ioDispatcher){
             try {
                 Resource.Success(apiService.getLeagueMatches(leagueCode,round))
