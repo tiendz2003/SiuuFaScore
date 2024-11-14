@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+    android:id="@+id/navigation_matches_football"
+    android:icon="@drawable/premier_league_idhcr6mt55_6"
+    android:title="@string/premier_league"
+    />
+    <item
+        android:id="@+id/navigation_matches_basketball"
+        android:icon="@drawable/seria"
+        android:title="@string/serie_a"
+        />
+    <item
+        android:id="@+id/navigation_matches_american_football"
+        android:icon="@drawable/icon_american_football"
+        android:title="@string/laliga"
+        />
+</menu>

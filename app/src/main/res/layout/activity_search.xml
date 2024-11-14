@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchActivity">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/search_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/search_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:navigationIcon="@drawable/back">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/search_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:textColor="@color/color_primary_default"
+                    android:hint="Tìm kiếm " />
+            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/search_tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"/>
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/search_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
