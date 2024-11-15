@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/team_to_detail_navigation"
+    app:startDestination="@id/searchTeamsFragment">
+
+    <fragment
+        android:id="@+id/searchTeamsFragment"
+        android:name="com.example.minilivescore.ui.searchteam.SearchTeamsFragment"
+        tools:layout="@layout/fragment_search_teams"
+        android:label="SearchTeamsFragment" >
+        <action
+            android:id="@+id/action_searchTeamsFragment_to_detailTeamFragment"
+            app:destination="@id/detailTeamFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailTeamFragment"
+        android:name="com.example.minilivescore.ui.detailteam.DetailTeamFragment"
+        android:label="fragment_detail_team"
+        tools:layout="@layout/fragment_detail_team">
+        <argument
+            android:name="teamId"
+            app:argType= "integer"
+            />
+
+    </fragment>
+
+</navigation>
