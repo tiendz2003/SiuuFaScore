@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.minilivescore.R
 import com.example.minilivescore.SearchActivity
+import com.example.minilivescore.data.model.TeamEntity
 import com.example.minilivescore.data.repository.TeamViewModelFactory
 import com.example.minilivescore.databinding.FragmentSearchTeamsBinding
 import com.example.minilivescore.ui.matches.MatchesViewModel
@@ -31,7 +33,18 @@ class SearchTeamsFragment : Fragment() {
     }
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
-        SearchTeamAdapter(Glide.with(this))
+        SearchTeamAdapter(Glide.with(this)){detailTeam->
+            // Điều hướng khi click
+            val action = SearchTeamsFragmentDirections
+                .actionSearchTeamsFragmentToDetailTeamFragment(detailTeam.id)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun navigationToDetail(detailTeam: TeamEntity){
+        val action = SearchTeamsFragmentDirections.actionSearchTeamsFragmentToDetailTeamFragment(detailTeam.id)
+
+        findNavController().navigate(action)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,9 +69,6 @@ class SearchTeamsFragment : Fragment() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = this@SearchTeamsFragment.adapter
-            post {
-                Log.d("SearchTeamsFragment", "RecyclerView size: ${width}x${height}")
-            }
         }
     }
     private fun observeResult(){

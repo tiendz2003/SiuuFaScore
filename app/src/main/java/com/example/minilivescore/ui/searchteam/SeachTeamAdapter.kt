@@ -13,7 +13,10 @@ import com.example.minilivescore.data.model.TeamEntity
 import com.example.minilivescore.databinding.ItemTeamBinding
 import okhttp3.Request
 
-class SearchTeamAdapter(private val request: RequestManager):ListAdapter<TeamEntity,SearchTeamAdapter.TeamViewHolder>(TeamDiffCallback()) {
+class SearchTeamAdapter(
+    private val request: RequestManager,
+    private val onItemClick:(TeamEntity) -> Unit
+    ):ListAdapter<TeamEntity,SearchTeamAdapter.TeamViewHolder>(TeamDiffCallback()) {
     inner class TeamViewHolder(private val binding:ItemTeamBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(team:TeamEntity){
             binding.apply {
@@ -22,6 +25,10 @@ class SearchTeamAdapter(private val request: RequestManager):ListAdapter<TeamEnt
                    .fitCenter()
                    .transition(DrawableTransitionOptions.withCrossFade())
                    .into(imgTeam)
+                //Xử lý khi ấn vào 1 đội
+                root.setOnClickListener {
+                    onItemClick(team)
+                }
             }
         }
     }
@@ -34,7 +41,7 @@ class SearchTeamAdapter(private val request: RequestManager):ListAdapter<TeamEnt
 
     override fun onBindViewHolder(holder: SearchTeamAdapter.TeamViewHolder, position: Int) {
         val team = getItem(position)
-        Log.d("SearchTeamAdapter", "Binding team: ${team.name} at position $position")
+      //  Log.d("SearchTeamAdapter", "Binding team: ${team.name} at position $position")
         return holder.bind(team)
     }
 

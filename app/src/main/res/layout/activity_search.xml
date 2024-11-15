@@ -1,45 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SearchActivity">
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/search_bar_layout"
+
+    <!-- Container cho main content -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/search_toolbar"
+        android:layout_height="match_parent">
+
+        <!-- AppBar -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/search_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            app:navigationIcon="@drawable/back">
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/search_input_layout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/search_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/search_input"
+                android:background="@color/white"
+                app:navigationIcon="@drawable/back">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/search_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:textColor="@color/color_primary_default"
-                    android:hint="Tìm kiếm " />
-            </com.google.android.material.textfield.TextInputLayout>
-        </com.google.android.material.appbar.MaterialToolbar>
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/search_tab_layout"
+                    app:boxStrokeWidth="0dp"
+                    app:boxStrokeWidthFocused="0dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/search_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:hint="Tìm kiếm"
+                        android:textColor="@color/color_primary_default" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/search_tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabMode="fixed" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- ViewPager và NavHostFragment trong FrameLayout -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="fixed"/>
-    </com.google.android.material.appbar.AppBarLayout>
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/search_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_bar_layout">
+
+            <!-- ViewPager -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/search_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <!-- NavHostFragment -->
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/team_to_detail_navigation" />
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

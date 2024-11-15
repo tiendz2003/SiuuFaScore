@@ -3,7 +3,7 @@ package com.example.minilivescore.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity("teams")
+@Entity(tableName = "teams")
 data class TeamEntity(
     @PrimaryKey
     val id:Int,
@@ -12,5 +12,30 @@ data class TeamEntity(
     val tla:String,
     val crest:String,
     val leagueId:String,
-    val lastUpdate:Long =System.currentTimeMillis()
+    val lastUpdate:Long =System.currentTimeMillis(),
     )
+
+
+@Entity(tableName = "players")
+data class PlayerEntity(
+    @PrimaryKey
+    val id:Int,
+    val name:String,
+    val teamId: Int,
+    val position:String,
+    val dateOfBirth:String?,
+    val nationality :String
+    )
+
+
+@Entity(tableName = "coaches")
+data class CoachEntity(
+    @PrimaryKey
+    val id:Int,
+    val name:String,
+    val teamId: Int,
+    val firstName: String,
+    val lastName: String,
+    val nationality: String,
+
+)

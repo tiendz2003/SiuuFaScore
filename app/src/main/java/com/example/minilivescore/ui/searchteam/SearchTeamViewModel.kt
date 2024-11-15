@@ -3,6 +3,7 @@ package com.example.minilivescore.ui.searchteam
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.minilivescore.data.database.LiveScoreDao
 import com.example.minilivescore.data.model.TeamEntity
 import com.example.minilivescore.data.repository.SearchRepository
 import com.example.minilivescore.utils.LiveScoreMiniServiceLocator
@@ -18,14 +19,7 @@ class SearchTeamViewModel(
         emptyList()))
 
     val searchResult = _searchResult.asStateFlow()
-    init {
-       viewModelScope.launch {
-           val result = kotlin.runCatching {
-               LiveScoreMiniServiceLocator.liveScoreApiService.searchTeams("PL")
-           }
-           println("result= $result")
-       }
-    }
+
     fun searchTeam(query:String){
         viewModelScope.launch {
             _searchResult.value = Resource.Loading()
