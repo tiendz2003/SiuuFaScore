@@ -2,12 +2,14 @@ package com.example.minilivescore
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.findNavController
 import com.example.minilivescore.data.repository.MatchRepository
-import com.example.minilivescore.data.repository.MatchesViewModelFactory
+import com.example.minilivescore.data.repository.MatchRepository.MatchesViewModelFactory
 import com.example.minilivescore.databinding.SharedActivityLayoutBinding
 import com.example.minilivescore.ui.matches.MatchesViewModel
 import com.example.minilivescore.utils.LiveScoreMiniServiceLocator
@@ -20,7 +22,7 @@ class MainActivity : AppCompatActivity() {
      }
 
     private val viewModel: MatchesViewModel by viewModels {
-        MatchesViewModelFactory(
+      MatchesViewModelFactory(
             repository,
             this,
             intent.extras
@@ -69,5 +71,4 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SearchActivity::class.java))
         }
     }
-
 }

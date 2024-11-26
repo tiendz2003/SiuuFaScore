@@ -173,3 +173,15 @@ data class Match(
         val played: Int?
     )
 }
+data class MatchLive(
+    @Json(name = "matchId") // Đảm bảo trường này phải khớp với JSON
+    val id: Int?, // Có thể để null nếu không bắt buộc
+    @Json(name = "awayTeam")
+    val awayTeam: String?,
+    @Json(name = "homeTeam")
+    val homeTeam: String?,
+    @Json(name = "matchDate")
+    val date: String?,
+    @Json(name = "ivsPlaybackUrl") // Đổi lại cho đúng tên trường
+    val playBackUrl: String?
+)

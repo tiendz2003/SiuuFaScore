@@ -78,18 +78,17 @@ class SearchRepository(
 
     private suspend fun refreshCache() = coroutineScope {
         try {
-            Resource.Loading<List<TeamEntity>>()
-
+            //Lưu như này hơi tốn kém gây ra tràn ram khi dữ liệu lớn.Nên thay trực tiếp vào cơ sở dữ liệu(dùng batch insert)(fixed)
             val allTeams = mutableListOf<TeamEntity>()
             val allPlayer = mutableListOf<PlayerEntity>()
             val allCoaches = mutableListOf<CoachEntity>()
             //tải tất cả câu lạc bộ
            leagues.map { leagueId ->
                 async {
-                    try {
                         val response = liveScoreApiService.searchTeams(leagueId)
                         if (response.isSuccessful) {
-                            response.body()?.teams?.map { team ->
+                            response.body()?.teams?.forEach { team ->
+
                                 //thêm danh sách đội bóng
                                 allTeams.add(TeamEntity(
                                     id = team.id,
@@ -122,28 +121,22 @@ class SearchRepository(
                                         firstName = coach.firstName
                                     ))
                                 }
-                            } ?: emptyList()
-                        } else {
-                            emptyList()
+                            }
                         }
-                    } catch (e: Exception) {
-                        emptyList()
-                    }
                 }
             }.awaitAll() // thêm tất cả cầu lạc bộ với nhau bằng hàm flatten
             //thêm danh sách cầu lạc bộ với database
             if(allTeams.isNotEmpty()){
-                livescoreDao.deleteTeams()
-                livescoreDao.deletePlayers()
-                livescoreDao.deleteCoaches()
-
-                livescoreDao.insertTeams(allTeams)
-                livescoreDao.insertPlayers(allPlayer)
-                allCoaches.forEach {
-                    livescoreDao.insertCoach(it)
-                }
+               livescoreDao.apply {
+                   deleteTeams()
+                   deletePlayers()
+                   deleteCoaches()
+                   insertTeams(allTeams)
+                   insertPlayers(allPlayer)
+                   allCoaches.forEach { insertCoach(it)
+                   }
+               }
             }
-
         } catch (e: Exception) {
             throw Exception("Error:{${e.localizedMessage}}")
         }

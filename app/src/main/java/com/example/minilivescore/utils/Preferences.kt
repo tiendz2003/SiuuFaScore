@@ -35,8 +35,6 @@ object Preferences {
         "CHE" to R.drawable.chelsea,
         "NOT" to R.drawable.nottingham,
         "CRY" to R.drawable.crystal,
-
-        // Thêm các đội khác tương tự
     )
     fun applyBackground(team:String,view: View){
         val backGround = clubBackgrounds[team]?:R.drawable.inplay

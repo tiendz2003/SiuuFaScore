@@ -31,10 +31,10 @@ interface LiveScoreDao {
 
     @Query("SELECT * FROM coaches WHERE teamId = :teamId")
     suspend fun getTeamCoach(teamId: Int):CoachEntity?
-
+    //Mỗi clb có nhiều cầu thủ(1-n)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlayers(players: List<PlayerEntity>)
-
+    //mỗi đội chỉ có 1 hlv(1-1)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCoach(coach: CoachEntity)
 

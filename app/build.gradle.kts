@@ -86,7 +86,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.5.0")
 */
 
-
+    implementation ("com.amazonaws:ivs-player:1.16.0")
     implementation ("com.airbnb.android:lottie:3.4.0")
     implementation ("com.google.apis:google-api-services-youtube:v3-rev20210915-1.32.1")
     implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.0.0")
@@ -100,6 +100,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.activity)
+  //  implementation(libs.androidx.media3.common.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -136,7 +137,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-
     implementation(libs.com.google.dagger.hilt.android)
     implementation ("androidx.test:core-ktx:1.6.1")
     ksp(libs.androidx.room.compiler)

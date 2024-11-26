@@ -11,13 +11,18 @@ import com.example.minilivescore.data.model.LeagueMatches
 import com.example.minilivescore.data.model.LeaguesStanding
 import com.example.minilivescore.utils.Resource
 import com.example.minilivescore.data.model.Match
+import com.example.minilivescore.data.model.MatchLive
 import com.example.minilivescore.data.networking.LiveScoreService
 import com.example.minilivescore.ui.matches.MatchesViewModel
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -42,34 +47,32 @@ class MatchRepository(
             apiService.getStandingLeagues(id)
         }
     }
-    suspend fun getMatches(): Resource<Match> {
+    val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory()) // Thêm KotlinJsonAdapterFactory
+        .build()
+    suspend fun getPlayBackUrl(id:Int):Resource<MatchLive>{
         return withContext(ioDispatcher){
-            try {
-                val dataFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                val calendar =Calendar.getInstance()
-                //Lấy ngày hôm nay
-                val today = calendar.time
-                val dateFrom = dataFormat.format(today)
-                //Lấy ngày hôm
-                calendar.add(Calendar.DAY_OF_YEAR,1)
-                val tomorrow = calendar.time
-                val dateTo = dataFormat.format(tomorrow)
-                Log.d("dateFrom",dateFrom)
-                Log.d("dateTo",dateTo)
-                Resource.Success(apiService.getMatches(dateFrom = "2024-10-05","2024-10-06"))
-
-            }catch (e:Exception){
-                Resource.Error(e.message?:"Đã xảy ra lỗi")
-            }
+          try {
+              val backendApi = Retrofit.Builder()
+                  .baseUrl("http://192.168.0.107:8080/")
+                  .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
+                  .build()
+                  .create(LiveScoreService::class.java)
+              val response = backendApi.getPlayBackUrl(id)
+              Log.d("API Response", response.toString())
+              Resource.Success(response)
+          }catch (e:Exception){
+              Resource.Error(e.message?:"Đã xảy ra lỗi")
+          }
         }
     }
-}
+
 
 class MatchesViewModelFactory(
     private val matchRepository: MatchRepository,
     owner:SavedStateRegistryOwner,
     defaultArgs:Bundle? = null
-) : AbstractSavedStateViewModelFactory(owner,defaultArgs){
+) : AbstractSavedStateViewModelFactory(owner,defaultArgs) {
     /* override fun <T : ViewModel> create(modelClass: Class<T>): T {
          if (modelClass.isAssignableFrom(MatchesViewModel::class.java)) {
              @Suppress("UNCHECKED_CAST")
@@ -83,10 +86,11 @@ class MatchesViewModelFactory(
         modelClass: Class<T>,
         handle: SavedStateHandle
     ): T {
-        if(modelClass.isAssignableFrom(MatchesViewModel::class.java)){
+        if (modelClass.isAssignableFrom(MatchesViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return MatchesViewModel(matchRepository,handle) as T
+            return MatchesViewModel(matchRepository, handle) as T
         }
         throw IllegalArgumentException("UnknownViewModelClass")
     }
+}
 }

@@ -3,6 +3,7 @@ package com.example.minilivescore.data.networking
 import com.example.minilivescore.data.model.LeagueMatches
 import com.example.minilivescore.data.model.LeaguesStanding
 import com.example.minilivescore.data.model.Match
+import com.example.minilivescore.data.model.MatchLive
 import com.example.minilivescore.data.model.SearchTeamsResponse
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -31,6 +32,9 @@ interface LiveScoreService {
     suspend fun searchTeams(
         @Path ("id") id: String
     ):Response<SearchTeamsResponse>
+
+    @GET("api/matches/{id}/stream")
+    suspend fun getPlayBackUrl(@Path ("id") id: Int):MatchLive
 
     companion object{
         operator fun invoke(retrofit: Retrofit):LiveScoreService = retrofit.create()
