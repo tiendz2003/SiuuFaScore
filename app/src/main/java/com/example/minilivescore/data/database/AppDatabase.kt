@@ -4,12 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.minilivescore.data.model.CoachEntity
-import com.example.minilivescore.data.model.PlayerEntity
-import com.example.minilivescore.data.model.TeamEntity
+import com.example.minilivescore.data.model.football.CoachEntity
+import com.example.minilivescore.data.model.football.PlayerEntity
+import com.example.minilivescore.data.model.football.TeamEntity
 
 
-@Database(entities = [TeamEntity::class,PlayerEntity::class,CoachEntity::class], version = 1)
+@Database(entities = [TeamEntity::class, PlayerEntity::class, CoachEntity::class], version = 1)
 abstract class AppDatabase():RoomDatabase() {
     abstract fun LiveScoreDao():LiveScoreDao
     companion object{

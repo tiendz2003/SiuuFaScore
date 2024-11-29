@@ -2,32 +2,20 @@ package com.example.minilivescore
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.findNavController
-import com.example.minilivescore.data.repository.MatchRepository
-import com.example.minilivescore.data.repository.MatchRepository.MatchesViewModelFactory
+import com.example.minilivescore.domain.repository.MatchRepository
 import com.example.minilivescore.databinding.SharedActivityLayoutBinding
-import com.example.minilivescore.ui.matches.MatchesViewModel
-import com.example.minilivescore.utils.LiveScoreMiniServiceLocator
+import com.example.minilivescore.presentation.ui.matches.MatchesViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
      lateinit var binding: SharedActivityLayoutBinding
-     val repository by lazy {
-         MatchRepository(apiService = LiveScoreMiniServiceLocator.liveScoreApiService)
-     }
-
-    private val viewModel: MatchesViewModel by viewModels {
-      MatchesViewModelFactory(
-            repository,
-            this,
-            intent.extras
-        )
-    }
+    private val viewModel by viewModels<MatchesViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -48,22 +36,26 @@ class MainActivity : AppCompatActivity() {
         binding.navViewMain.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_matches_football -> {
-                    viewModel.setCurrentLeague("PL")
-                    viewModel.getStandingLeagues("PL")
+                    fetchCurrentLeagueUI("PL")
                     true
                 }
                 R.id.navigation_matches_basketball -> {
-                    viewModel.setCurrentLeague("SA")
-                    viewModel.getStandingLeagues("SA")
+                    fetchCurrentLeagueUI("SA")
                     true
                 }
                 R.id.navigation_matches_american_football -> {
-                    viewModel.setCurrentLeague("PD")
-                    viewModel.getStandingLeagues("PD")
+                    fetchCurrentLeagueUI("PD")
                     true
                 }
                 else -> false
             }
+        }
+    }
+    //Cập nhật UI cho từng giải đấu
+    private fun fetchCurrentLeagueUI(leagueCode: String) {
+        viewModel.apply {
+            setCurrentLeague(leagueCode)
+            getStandingLeagues(leagueCode)
         }
     }
     private fun setOnClickListener() {

@@ -15,23 +15,25 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.room.util.query
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.minilivescore.data.database.AppDatabase
-import com.example.minilivescore.data.repository.SearchRepository
-import com.example.minilivescore.data.repository.TeamViewModelFactory
+import com.example.minilivescore.domain.repository.SearchRepository
+import com.example.minilivescore.domain.repository.TeamViewModelFactory
 import com.example.minilivescore.databinding.ActivitySearchBinding
-import com.example.minilivescore.ui.searchteam.SearchTeamViewModel
-import com.example.minilivescore.ui.searchteam.SearchTeamsFragment
+import com.example.minilivescore.presentation.ui.searchteam.SearchTeamViewModel
+import com.example.minilivescore.presentation.ui.searchteam.SearchTeamsFragment
 import com.example.minilivescore.utils.LiveScoreMiniServiceLocator
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
     private val binding by lazy(LazyThreadSafetyMode.NONE){ActivitySearchBinding.inflate(layoutInflater)}
 
-    private val database by lazy {
-        AppDatabase.getDatabase(this)
-    }
+
+    @Inject lateinit var database: AppDatabase
     private val teamDao by lazy {
         database.LiveScoreDao()
     }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.detailmatch.DetailMatchFragment"
+    tools:context=".presentation.ui.detailmatch.DetailMatchFragment"
     android:background="@color/white">
     <com.amazonaws.ivs.player.PlayerView
         android:id="@+id/liveScreen"

@@ -1,16 +1,14 @@
 package com.example.minilivescore.data.database
 
 import androidx.room.Dao
-import androidx.room.Embedded
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Relation
 import androidx.room.Transaction
-import com.example.minilivescore.data.model.CoachEntity
-import com.example.minilivescore.data.model.PlayerEntity
-import com.example.minilivescore.data.model.TeamEntity
-import com.example.minilivescore.data.model.TeamWithDetails
+import com.example.minilivescore.data.model.football.CoachEntity
+import com.example.minilivescore.data.model.football.PlayerEntity
+import com.example.minilivescore.data.model.football.TeamEntity
+import com.example.minilivescore.data.model.football.TeamWithDetails
 
 @Dao
 interface LiveScoreDao {
@@ -30,7 +28,7 @@ interface LiveScoreDao {
     suspend fun getTeamPlayers(teamId: Int):List<PlayerEntity>
 
     @Query("SELECT * FROM coaches WHERE teamId = :teamId")
-    suspend fun getTeamCoach(teamId: Int):CoachEntity?
+    suspend fun getTeamCoach(teamId: Int): CoachEntity?
     //Mỗi clb có nhiều cầu thủ(1-n)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlayers(players: List<PlayerEntity>)

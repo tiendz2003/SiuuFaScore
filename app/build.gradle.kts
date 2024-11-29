@@ -3,12 +3,17 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.kotlin.kapt)
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
     id ("androidx.navigation.safeargs.kotlin")
-/*
-    id ("com.google.gms.google-services")
-*/
+    id("com.google.dagger.hilt.android")
+
+
+
+    /*
+        id ("com.google.gms.google-services")
+    */
 }
 
 android {
@@ -21,7 +26,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
+        multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -68,7 +73,7 @@ android {
     buildFeatures {
         buildConfig = true
         viewBinding =  true
-        compose = true
+
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -85,7 +90,7 @@ dependencies {
 /*
     implementation("com.google.android.gms:play-services-auth:20.5.0")
 */
-
+    implementation("androidx.multidex:multidex:2.0.1")
     implementation ("com.amazonaws:ivs-player:1.16.0")
     implementation ("com.airbnb.android:lottie:3.4.0")
     implementation ("com.google.apis:google-api-services-youtube:v3-rev20210915-1.32.1")
@@ -117,30 +122,22 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
-
-/*
-    implementation ("androidx.compose.runtime:runtime-livedata:1.6.8")
-    implementation ("androidx.lifecycle:lifecycle-runtime-compose:2.8.3")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
-*/  implementation ("androidx.core:core-ktx:1.13.1")
+    implementation ("androidx.core:core-ktx:1.13.1")
     implementation ("com.squareup.moshi:moshi-kotlin:1.12.0")
     ksp("com.squareup.moshi:moshi-kotlin-codegen:1.12.0")
     implementation ("com.squareup.retrofit2:converter-moshi:2.9.0")
-
     implementation(libs.androidx.paging.runtime)
-
     implementation(libs.com.github.bumptech.glide)
     implementation(libs.androidx.work.runtime)
-
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.com.google.dagger.hilt.android)
+    kapt(libs.com.google.dagger.hilt.android.compiler)
     implementation ("androidx.test:core-ktx:1.6.1")
     ksp(libs.androidx.room.compiler)
-    implementation ("com.google.dagger:hilt-android-gradle-plugin:2.44")
     implementation(libs.com.squareup.retrofit2)
     implementation(libs.com.squareup.okhttp3.logging.interceptor)
     implementation(libs.com.squareup.retrofit2.converter.gson)

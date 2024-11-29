@@ -1,6 +1,6 @@
 package com.example.minilivescore.data.networking
 
-import com.example.minilivescore.data.model.SearchMatchResponse
+import com.example.minilivescore.data.model.youtube.SearchMatchResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

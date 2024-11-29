@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.standing.StandingFragment">
+    tools:context=".presentation.ui.standing.StandingFragment">
 
    <include
        android:id="@+id/standing_header"

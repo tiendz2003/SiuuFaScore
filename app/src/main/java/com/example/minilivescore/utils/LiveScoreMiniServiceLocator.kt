@@ -3,6 +3,7 @@ package com.example.minilivescore.utils
 import androidx.annotation.MainThread
 import com.airbnb.lottie.BuildConfig
 import com.example.minilivescore.BuildConfig.API_KEY
+import com.example.minilivescore.LiveScoreMiniApplication
 import com.example.minilivescore.data.networking.LiveScoreService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory

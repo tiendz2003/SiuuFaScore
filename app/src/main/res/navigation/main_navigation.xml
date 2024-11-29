@@ -7,16 +7,16 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.minilivescore.ui.HomeFragment"
+        android:name="com.example.minilivescore.presentation.ui.HomeFragment"
         android:label="HomeFragment" />
 
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.minilivescore.ui.detailmatch.DetailMatchFragment"
+        android:name="com.example.minilivescore.presentation.ui.detailmatch.DetailMatchFragment"
         android:label="DetailFragment">
         <argument
             android:name="match"
-            app:argType="com.example.minilivescore.data.model.LeagueMatches$Matche"
+            app:argType="com.example.minilivescore.data.model.football.LeagueMatches$Matche"
             />
         <argument
             android:name="matchday"
@@ -38,7 +38,7 @@
         app:restoreState="true"/>
     <fragment
         android:id="@+id/matchesFragment"
-        android:name="com.example.minilivescore.ui.matches.MatchesFragment"
+        android:name="com.example.minilivescore.presentation.ui.matches.MatchesFragment"
         android:label="fragment_sport_event"
         tools:layout="@layout/fragment_sport_event" >
 

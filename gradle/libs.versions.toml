@@ -1,6 +1,6 @@
 [versions]
 agp = "8.7.1"
-kotlin = "1.9.0"
+kotlin = "2.0.21"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -11,7 +11,7 @@ composeBom = "2023.08.00"
 room = "2.5.1"
 lifecycle = "2.6.1"
 navigation = "2.7.7"
-dagger = "2.44"
+dagger = "2.52"
 paging = "3.1.1"
 glide = "4.15.1"
 work = "2.8.1"
@@ -23,7 +23,7 @@ material = "1.5.0"
 constraintLayout = "2.1.4"
 appcompat = "1.6.1"
 activity = "1.8.0"
-media3CommonKtx = "1.4.1"
+ksp = "2.0.21-1.0.26"
 
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -62,8 +62,9 @@ androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintLayout" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
-androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
 
 [plugins]
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
