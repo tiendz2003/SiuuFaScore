@@ -56,7 +56,6 @@ class SearchActivity : AppCompatActivity() {
         setupViewPager()
         setupToolbar()
         setUpSearchInput()
-        setupNavController()
         lifecycleScope.launch {
             val users = teamDao.getAllTeams() // Thực hiện truy vấn
             // Xử lý dữ liệu và cập nhật UI
@@ -113,10 +112,7 @@ class SearchActivity : AppCompatActivity() {
         }.attach()
 
     }
-    private fun setupNavController() {
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-    }
+
     private inner class ScreenSlidePagerAdapter(fragmentActivity: SearchActivity):FragmentStateAdapter(fragmentActivity){
         override fun getItemCount(): Int {
            return 2

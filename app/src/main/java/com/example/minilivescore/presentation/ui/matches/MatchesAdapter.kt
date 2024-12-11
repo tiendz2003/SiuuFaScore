@@ -11,6 +11,9 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.minilivescore.data.model.football.LeagueMatches
 import com.example.minilivescore.databinding.ItemMatchBinding
 import com.example.minilivescore.utils.Preferences
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 class MatchesAdapter(
     private val request: RequestManager,
@@ -18,6 +21,8 @@ class MatchesAdapter(
 ):ListAdapter<LeagueMatches.Matche, MatchesAdapter.MatchViewHolder> (MatchDiffCallBack()){
    inner class MatchViewHolder(private val binding: ItemMatchBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(match: LeagueMatches.Matche){
+            //setup thời gian
+            val time = Preferences.setupTime(match.utcDate)
             binding.apply {
                statusFinish.visibility = View.GONE
                statusStart.visibility = View.GONE
@@ -36,7 +41,10 @@ class MatchesAdapter(
                         statusInplay.visibility = View.VISIBLE
                     }
                 }
-                scoreTextView.text ="${match.score.fullTime?.home?:"-"} - ${match.score.fullTime?.away?:"-"}"
+                scoreTextView.text = when{
+                    match.score.fullTime?.home == null -> time
+                    else -> "${match.score.fullTime.home} - ${match.score.fullTime.away}"
+                }
                 request.load(match.homeTeam.crest)
                     .fitCenter()
                     .transition(DrawableTransitionOptions.withCrossFade())

@@ -8,12 +8,7 @@ plugins {
     id("kotlin-parcelize")
     id ("androidx.navigation.safeargs.kotlin")
     id("com.google.dagger.hilt.android")
-
-
-
-    /*
-        id ("com.google.gms.google-services")
-    */
+    id ("com.google.gms.google-services")
 }
 
 android {
@@ -87,10 +82,16 @@ android {
 }
 
 dependencies {
-/*
-    implementation("com.google.android.gms:play-services-auth:20.5.0")
-*/
-    implementation("androidx.multidex:multidex:2.0.1")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation ("com.google.firebase:firebase-messaging-ktx:24.1.0")
+    implementation(libs.firebase.database.ktx)
+    val credential_ver = "1.3.0"
+    implementation(libs.googleid)
+    implementation ("androidx.credentials:credentials:$credential_ver")
+    implementation ("androidx.credentials:credentials-play-services-auth:$credential_ver")
     implementation ("com.amazonaws:ivs-player:1.16.0")
     implementation ("com.airbnb.android:lottie:3.4.0")
     implementation ("com.google.apis:google-api-services-youtube:v3-rev20210915-1.32.1")
@@ -105,7 +106,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.activity)
-  //  implementation(libs.androidx.media3.common.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -148,4 +148,5 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)
     implementation(libs.androidx.constraintlayout)
+    implementation ("androidx.startup:startup-runtime:1.1.1")
 }

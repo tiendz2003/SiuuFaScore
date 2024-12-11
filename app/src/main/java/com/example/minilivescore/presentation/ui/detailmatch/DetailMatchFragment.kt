@@ -8,51 +8,58 @@
     import android.view.View
     import android.view.ViewGroup
     import android.widget.Toast
+    import androidx.appcompat.widget.Toolbar
     import androidx.fragment.app.viewModels
-    import androidx.lifecycle.viewmodel.viewModelFactory
+    import androidx.lifecycle.lifecycleScope
+    import androidx.navigation.fragment.findNavController
     import androidx.navigation.fragment.navArgs
+    import androidx.recyclerview.widget.LinearLayoutManager
     import com.amazonaws.ivs.player.Player
     import com.amazonaws.ivs.player.PlayerException
-    import com.bumptech.glide.Glide
-    import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+    import com.example.minilivescore.MainActivity
     import com.example.minilivescore.R
+    import com.example.minilivescore.data.model.football.FavoriteTeam
     import com.example.minilivescore.data.model.football.LeagueMatches
-    import com.example.minilivescore.domain.repository.HighlightRepository
-    import com.example.minilivescore.domain.repository.MatchRepository
     import com.example.minilivescore.databinding.FragmentDetailMatchBinding
+    import com.example.minilivescore.domain.repository.FavoriteTeamRepository
     import com.example.minilivescore.extension.loadImage
-    import com.example.minilivescore.utils.LiveScoreMiniServiceLocator
+    import com.example.minilivescore.presentation.base.BaseFragment
+    import com.example.minilivescore.presentation.ui.detailmatch.comment.BottomSheetFragment
+    import com.example.minilivescore.presentation.ui.detailmatch.comment.CommentAdapter
+    import com.example.minilivescore.presentation.ui.searchteam.SearchTeamsFragmentDirections
     import com.example.minilivescore.utils.Preferences
     import com.example.minilivescore.utils.Resource
+    import com.google.android.material.bottomnavigation.BottomNavigationView
     import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
     import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
     import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
     import dagger.hilt.android.AndroidEntryPoint
-    import kotlinx.coroutines.Dispatchers
+    import kotlinx.coroutines.flow.collectLatest
+    import kotlinx.coroutines.launch
+    import javax.inject.Inject
 
     @AndroidEntryPoint
-    class DetailMatchFragment : Fragment() {
-        private var _binding :FragmentDetailMatchBinding? = null
-        private val binding get() = _binding!!
+    class DetailMatchFragment : BaseFragment<FragmentDetailMatchBinding>(FragmentDetailMatchBinding::inflate) {
         private val args : DetailMatchFragmentArgs by navArgs()
         private lateinit var matches: LeagueMatches.Matche
         private var player: Player?= null
-
+        private lateinit var commentAdapter: CommentAdapter
+        @Inject lateinit var favRepository: FavoriteTeamRepository
         private val viewModel by viewModels<MatchDetailViewModel>()
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-        }
 
         override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
+            inflater: LayoutInflater,
+            container: ViewGroup?,
             savedInstanceState: Bundle?
-        ): View {
-            _binding = FragmentDetailMatchBinding.inflate(inflater,container,false)
-            return binding.root
+        ): View? {
+            commentAdapter = CommentAdapter()
+            return super.onCreateView(inflater, container, savedInstanceState)
+
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
+            setupNavigation(false)
             updateUI()
            // val playbackUrl = " https://fcc3ddae59ed.us-west-2.playback.live-video.net/api/video/v1/us-west-2.893648527354.channel.DmumNckWFTqz.m3u8"
             setupPLayer()
@@ -62,25 +69,36 @@
             val awayTeam = matches.awayTeam.shortName
             val title ="${homeTeam.uppercase()} - ${awayTeam.uppercase()}"
             viewModel.loadHighlight(title)
+
         }
 
 
-        private fun updateUI(){
-            matches =args.match
 
+        private fun updateUI(){
+
+            matches =args.match
+            val favTeam = FavoriteTeam(matches.homeTeam.id.toString(),matches.homeTeam.shortName,matches.homeTeam.crest)
+            val time = Preferences.setupTime(matches.utcDate)
             observeStreamUrl(matches.id)
+            viewModel.getComments(matches.id.toString())
             Log.d("Match","${matches.id}")
             binding.homeTeamName.text = matches.homeTeam.tla
             binding.awayTeamName.text = matches.awayTeam.tla
             binding.tvDateTime.text = Preferences.formatDate(matches.utcDate)
-            binding.matchScore.text = "${matches.score.fullTime?.home?:"-"} - ${matches.score.fullTime?.away?:"-"}"
-          /*  Glide.with(this)
-                .load(matches.homeTeam.crest)
-                .fitCenter()
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(binding.homeTeamLogo)*/
+            binding.matchScore.text = when{
+                matches.score.fullTime?.home == null -> time
+                else -> "${matches.score.fullTime?.home} - ${matches.score.fullTime?.away}"
+            }
+            binding.homeTeamLogo.setOnClickListener {
+                viewModel.addFavoriteTeam(favTeam)
+                Toast.makeText(context, "Đã thêm ${matches.homeTeam.shortName} vào đội yêu thích", Toast.LENGTH_SHORT).show()
+            }
             binding.homeTeamLogo.loadImage(matches.homeTeam.crest)
             binding.awayTeamLogo.loadImage(matches.awayTeam.crest)
+            binding.reply.setOnClickListener {
+                navigationToBottomSheet(matches.id.toString())
+            }
+            binding.logoLeague.loadImage(matches.competition.emblem)
             Preferences.setFontStyle(binding.matchScore)
             Preferences.setFontStyle(binding.homeTeamName)
             Preferences.setFontStyle(binding.awayTeamName)
@@ -90,6 +108,14 @@
             Preferences.updateTextColorBasedOnGradient(binding.awayTeamScore,binding.awayTeamName)
             Preferences.updateTextColorBasedOnGradient(binding.homeTeamScore,binding.homeTeamName)
 
+        }
+        private fun navigationToBottomSheet(matchId: String){
+            val bottomSheetFragment = BottomSheetFragment()
+            val bundle = Bundle().apply {
+                putString("matchId",matchId)
+            }
+            bottomSheetFragment.arguments = bundle
+            bottomSheetFragment.show(childFragmentManager,bottomSheetFragment.tag)
         }
         private fun observeViewModel(){
             viewModel.highlightState.observe(viewLifecycleOwner){state ->
@@ -116,14 +142,13 @@
                     }
                 }
 
-                override fun onError(p0: PlayerException) {
-                    p0.message?.let { showError(it) }
+                override fun onError(exception: PlayerException) {
+                    exception.message?.let { showError(it) }
                 }
 
             })
         }
         private fun showVideo(videoId: String) {
-            binding.progressBar.visibility = View.GONE
             binding.youtubePlayerView.visibility = View.VISIBLE
             binding.youtubePlayerView.addYouTubePlayerListener(object :AbstractYouTubePlayerListener(){
                 override fun onReady(youTubePlayer: YouTubePlayer) {
@@ -134,7 +159,7 @@
 
         private fun showLoading() {
 
-            binding.progressBar.visibility = View.VISIBLE
+            binding.progressBar.visibility = View.GONE
         }
         private fun showError(message: String) {
             // Hiển thị thông báo lỗi
@@ -153,9 +178,17 @@
                 }
             }
         }
+        private fun setupNavigation(isVisible:Boolean){
+            val toolbar = requireActivity().findViewById<Toolbar>(R.id.toolbar_main)
+            val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view_main)
+            val visibility = if(isVisible) View.VISIBLE else View.GONE
+            toolbar?.visibility = visibility
+            bottomNav?.visibility = visibility
+        }
+
+
 
         override fun onDestroyView() {
-            _binding = null
             super.onDestroyView()
 
             //loại bỏ tham chiếu khi fragmemt bị hủy
@@ -163,6 +196,7 @@
             youtubePlayerView?.release()
             player?.release()
             player = null
+           setupNavigation(true)
         }
         companion object {
 

@@ -79,6 +79,9 @@ class MatchesViewModel @Inject constructor (
                 }
             }
         }
+        viewModelScope.launch {
+
+        }
 
     }
     private fun selectedMatchday(matchday:Int){
@@ -116,19 +119,17 @@ class MatchesViewModel @Inject constructor (
     //xử lý khi vòng đấu sau
     fun incrementMatchday() {
         _matchday.value?.let { currentMatchday ->
-            if (currentMatchday < 38) {
-                selectedMatchday(currentMatchday +1 )
-            } else {
-                _matchError.value = "Đã đến vòng đấu cuối cùng"
+            when{
+                currentMatchday <38 -> selectedMatchday(currentMatchday + 1)
+                else -> _matchError.value = "Đã đến vòng đấu cuối"
             }
         }
     }
     fun decrementMatchday() {
         _matchday.value?.let { currentMatchday ->
-            if (currentMatchday > 1) {
-               selectedMatchday(currentMatchday - 1)
-            } else {
-                _matchError.value = "Đã đến vòng đấu đầu tiên"
+            when{
+                currentMatchday >1 -> selectedMatchday(currentMatchday - 1)
+                else -> _matchError.value = "Đã đến vòng đấu đầu tiên"
             }
         }
     }

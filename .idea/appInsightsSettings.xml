@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.minilivescore" />
+                  <option name="mobileSdkAppId" value="1:650967418124:android:6b5d99df80ce59e3a63529" />
+                  <option name="projectId" value="siufascore" />
+                  <option name="projectNumber" value="650967418124" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

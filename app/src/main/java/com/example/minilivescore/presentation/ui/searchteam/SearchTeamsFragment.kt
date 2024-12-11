@@ -14,16 +14,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.minilivescore.SearchActivity
 import com.example.minilivescore.data.model.football.TeamEntity
+import com.example.minilivescore.databinding.FragmentDetailTeamBinding
 import com.example.minilivescore.domain.repository.TeamViewModelFactory
 import com.example.minilivescore.databinding.FragmentSearchTeamsBinding
+import com.example.minilivescore.presentation.base.BaseFragment
 import com.example.minilivescore.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchTeamsFragment : Fragment() {
-    private var _binding : FragmentSearchTeamsBinding? = null
-    private val binding get() = _binding!!
+class SearchTeamsFragment : BaseFragment<FragmentSearchTeamsBinding>(FragmentSearchTeamsBinding::inflate) {
+
     // Sử dụng activityViewModels() để share ViewModel với Activity
     val viewModel: SearchTeamViewModel by activityViewModels()
 
@@ -45,13 +46,7 @@ class SearchTeamsFragment : Fragment() {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSearchTeamsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -95,10 +90,7 @@ class SearchTeamsFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of

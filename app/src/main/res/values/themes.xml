@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.MiniLiveScore" parent="Theme.AppCompat.Light.NoActionBar"
-        >
+    <style name="Theme.MiniLiveScore" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="fontFamily">@font/premierleague_regular</item>
+    </style>
+    <style name="Theme.Login" parent="@style/Theme.Material3.DayNight.NoActionBar">
         <item name="fontFamily">@font/premierleague_regular</item>
     </style>
 

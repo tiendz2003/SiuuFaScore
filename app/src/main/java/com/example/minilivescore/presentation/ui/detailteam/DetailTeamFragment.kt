@@ -17,14 +17,13 @@ import com.example.minilivescore.SearchActivity
 import com.example.minilivescore.data.model.football.TeamWithDetails
 import com.example.minilivescore.databinding.FragmentDetailTeamBinding
 import com.example.minilivescore.extension.loadImage
+import com.example.minilivescore.presentation.base.BaseFragment
 import com.example.minilivescore.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DetailTeamFragment : Fragment() {
-    private var _binding :FragmentDetailTeamBinding? = null
-    private val binding get() = _binding!!
+class DetailTeamFragment : BaseFragment<FragmentDetailTeamBinding>(FragmentDetailTeamBinding::inflate) {
      private val args: DetailTeamFragmentArgs by navArgs()
     private val viewModel: DetailTeamViewModel by viewModels()
     private val adapterPlayer by lazy(LazyThreadSafetyMode.NONE) {
@@ -36,14 +35,6 @@ class DetailTeamFragment : Fragment() {
         Log.d("OnCreate","Siuu")
 
 
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentDetailTeamBinding.inflate(inflater,container,false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

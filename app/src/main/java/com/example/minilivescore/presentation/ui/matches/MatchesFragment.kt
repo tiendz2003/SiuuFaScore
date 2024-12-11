@@ -17,17 +17,20 @@ import com.bumptech.glide.Glide
 import com.example.minilivescore.R
 import com.example.minilivescore.data.model.football.LeagueMatches
 import com.example.minilivescore.databinding.FragmentSportEventBinding
+import com.example.minilivescore.domain.repository.AuthRepository
 import com.example.minilivescore.extension.setOnDebounceClickListener
+import com.example.minilivescore.presentation.base.BaseFragment
 import com.example.minilivescore.presentation.ui.HomeFragmentDirections
 import com.example.minilivescore.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MatchesFragment : Fragment() {
-    private var _binding: FragmentSportEventBinding? = null
-    private val binding get() = _binding!!
+class MatchesFragment : BaseFragment<FragmentSportEventBinding>(FragmentSportEventBinding::inflate) {
+
     private val viewModel: MatchesViewModel by activityViewModels()
+    @Inject lateinit var authRepo: AuthRepository
     private val adapter: MatchesAdapter by lazy(LazyThreadSafetyMode.NONE) {
         MatchesAdapter(Glide.with(this)){match ->
             navigateToDetailMatch(match)
@@ -39,13 +42,7 @@ class MatchesFragment : Fragment() {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSportEventBinding.inflate(inflater,container,false)
-        return binding.root
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -63,7 +60,7 @@ class MatchesFragment : Fragment() {
 
             else -> null
         }
-
+        binding.info.name.text = authRepo.getCurrentUser()?.displayName
         binding.swipeRefreshLayout.setOnRefreshListener {
             // Use the current league code when refreshing
             fetchMatchesForCurrentLeague()
@@ -159,10 +156,6 @@ class MatchesFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
     companion object {
 
         @JvmStatic

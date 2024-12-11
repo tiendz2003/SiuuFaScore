@@ -10,6 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import androidx.core.content.res.ResourcesCompat
 import com.example.minilivescore.R
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
@@ -44,7 +45,11 @@ object Preferences {
         val typeFace = ResourcesCompat.getFont(tv.context, R.font.premierleague_bold)
         tv.typeface = typeFace
     }
-
+    fun setupTime(date :String):String{
+        val vnTime = ZonedDateTime.parse(date).withZoneSameInstant(ZoneId.of("Asia/Ho_Chi_Minh"))
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+        return vnTime.format(formatter)
+    }
     fun formatDate(dateTime:String):String{
         val date = ZonedDateTime.parse(dateTime)
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
