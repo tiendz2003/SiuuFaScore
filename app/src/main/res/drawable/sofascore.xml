@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="400dp"
+    android:viewportWidth="800"
+    android:viewportHeight="800">
+
+  <!-- Path 1, được tăng kích thước gấp đôi -->
+  <path
+      android:pathData="M320,371l0,29 14,-0 13.8,-0 0.6,-14.6 0.6,-14.4 43.6,-0.6 43.4,-0.4 0,-14 0,-14 -58,-0 -58,-0 0,29z"
+      android:fillColor="@color/white"
+      android:strokeColor="#00000000"/>
+
+  <!-- Path 2, được tăng kích thước gấp đôi -->
+  <path
+      android:pathData="M407.4,401.4c-0.8,0.6 -1.4,7 -1.4,13.8l0,12.8 -42.4,0.4 -42.6,0.6 -0.6,14.4 -0.6,14.6 58.2,-0 58,-0 0,-29 0,-29 -13.6,-0c-7.6,-0 -14.4,0.6 -15,1.4z"
+      android:fillColor="@color/white"
+      android:strokeColor="#00000000"/>
+</vector>
