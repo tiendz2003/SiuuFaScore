@@ -1,20 +1,19 @@
-package com.example.minilivescore.presentation.ui.standing
+package com.example.minilivescore.presentation.ui.home.standing
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.minilivescore.MainActivity
 import com.example.minilivescore.R
 import com.example.minilivescore.databinding.FragmentStandingBinding
 import com.example.minilivescore.presentation.base.BaseFragment
-import com.example.minilivescore.presentation.ui.matches.MatchesViewModel
+import com.example.minilivescore.presentation.ui.home.MatchesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -26,18 +25,11 @@ class StandingFragment : BaseFragment<FragmentStandingBinding>(FragmentStandingB
         LeaguesStandingAdapter(Glide.with(this))
     }
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecycleView()
         observeViewModel()
+        observeCurrentLeague()
         binding.swipeRefreshLayout.setOnRefreshListener {
             (activity as? MainActivity)?.let {
                 when(it.binding.navViewMain.selectedItemId){
@@ -69,6 +61,27 @@ class StandingFragment : BaseFragment<FragmentStandingBinding>(FragmentStandingB
             binding.recyclerView.visibility = View.GONE
             binding.noEventsTextView.visibility = View.VISIBLE
             binding.noEventsTextView.text = errorMessage
+        }
+
+    }
+    private fun observeCurrentLeague() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.currentLeague.collect { leagueCode ->
+                    val (leagueName,leagueLogo) = when(leagueCode) {
+                        "PL" -> Pair("Premier League",R.drawable.premier_league_idhcr6mt55_6)
+                        "SA" -> Pair("Serie A",R.drawable.seria)
+                        "PD" -> Pair("La Liga",R.drawable.laliga)
+                        else -> Pair("Không có giải đấu nào",R.drawable.images)
+                    }
+                    binding.standingHeader.textView.text = leagueName
+                    Glide.with(requireContext())
+                        .load(leagueLogo)
+                        .fitCenter()
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(binding.standingHeader.imageView)
+                }
+            }
         }
     }
     private fun setupRecycleView(){

@@ -1,9 +1,9 @@
 package com.example.minilivescore.presentation.ui.detailteam
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.minilivescore.data.model.football.TeamWithDetails
+import com.example.minilivescore.data.repository.SearchRepositoryImpl
 import com.example.minilivescore.domain.repository.SearchRepository
 import com.example.minilivescore.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailTeamViewModel @Inject constructor (
-    val searchRepository: SearchRepository):ViewModel() {
+    private val searchRepository: SearchRepository
+):ViewModel() {
     private val _teamDetails = MutableStateFlow<Resource<TeamWithDetails>>(Resource.Loading())
     val teamDetails = _teamDetails.asStateFlow()
 
@@ -31,16 +32,4 @@ class DetailTeamViewModel @Inject constructor (
         }
     }
 
-}
-class DetailTeamViewModelFactory(
-    private val repository: SearchRepository
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(DetailTeamViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return DetailTeamViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
 }

@@ -3,6 +3,7 @@ package com.example.minilivescore.presentation.ui.searchteam
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.minilivescore.data.model.football.TeamEntity
+import com.example.minilivescore.data.repository.SearchRepositoryImpl
 import com.example.minilivescore.domain.repository.SearchRepository
 import com.example.minilivescore.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

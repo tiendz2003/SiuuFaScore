@@ -2,22 +2,17 @@ package com.example.minilivescore.presentation.ui.detailteam
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.example.minilivescore.SearchActivity
 import com.example.minilivescore.data.model.football.TeamWithDetails
 import com.example.minilivescore.databinding.FragmentDetailTeamBinding
 import com.example.minilivescore.extension.loadImage
 import com.example.minilivescore.presentation.base.BaseFragment
+import com.example.minilivescore.utils.Preferences
 import com.example.minilivescore.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -33,8 +28,6 @@ class DetailTeamFragment : BaseFragment<FragmentDetailTeamBinding>(FragmentDetai
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("OnCreate","Siuu")
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,6 +90,7 @@ class DetailTeamFragment : BaseFragment<FragmentDetailTeamBinding>(FragmentDetai
 
             // Update players list
             adapterPlayer.submitList(details.players)
+            Preferences.applyBackground(details.team.tla,binding.headerLayout,)
         }
     }
     companion object {

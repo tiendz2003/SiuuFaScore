@@ -1,27 +1,28 @@
-package com.example.minilivescore.presentation.ui.matches
+package com.example.minilivescore.presentation.ui.home.matches
 
+import android.graphics.Color
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.minilivescore.R
 import com.example.minilivescore.data.model.football.LeagueMatches
 import com.example.minilivescore.databinding.FragmentSportEventBinding
-import com.example.minilivescore.domain.repository.AuthRepository
+import com.example.minilivescore.data.repository.AuthRepository
 import com.example.minilivescore.extension.setOnDebounceClickListener
 import com.example.minilivescore.presentation.base.BaseFragment
-import com.example.minilivescore.presentation.ui.HomeFragmentDirections
+import com.example.minilivescore.presentation.ui.home.HomeFragmentDirections
+import com.example.minilivescore.presentation.ui.home.MatchesViewModel
 import com.example.minilivescore.utils.Resource
+import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,18 +33,22 @@ class MatchesFragment : BaseFragment<FragmentSportEventBinding>(FragmentSportEve
     private val viewModel: MatchesViewModel by activityViewModels()
     @Inject lateinit var authRepo: AuthRepository
     private val adapter: MatchesAdapter by lazy(LazyThreadSafetyMode.NONE) {
-        MatchesAdapter(Glide.with(this)){match ->
-            navigateToDetailMatch(match)
+        MatchesAdapter(Glide.with(this)){match,view->
+            navigateToDetailMatch(match,view)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        exitTransition = MaterialContainerTransform().apply {
+            duration = 500
+            fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
+            scrimColor = Color.TRANSPARENT
+        }
+        reenterTransition = MaterialContainerTransform().apply {
+            duration = 300
+        }
     }
-
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
@@ -150,10 +155,13 @@ class MatchesFragment : BaseFragment<FragmentSportEventBinding>(FragmentSportEve
         binding.recyclerView.adapter = adapter
     }
     //Truyền dữ liệu sang cho DetailFragment
-    private fun navigateToDetailMatch(match: LeagueMatches.Matche){
-      val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(match)
+    private fun navigateToDetailMatch(match: LeagueMatches.Matche,views:View) {
+        val extras = FragmentNavigatorExtras(
+           views to "score_${match.id}"
+        )
+        val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(match)
 
-        findNavController().navigate(action)
+        findNavController().navigate(action,extras)
     }
 
     companion object {

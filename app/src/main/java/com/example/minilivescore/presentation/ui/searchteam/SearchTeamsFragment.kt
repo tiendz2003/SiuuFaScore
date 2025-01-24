@@ -10,12 +10,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.minilivescore.SearchActivity
-import com.example.minilivescore.data.model.football.TeamEntity
-import com.example.minilivescore.databinding.FragmentDetailTeamBinding
-import com.example.minilivescore.domain.repository.TeamViewModelFactory
 import com.example.minilivescore.databinding.FragmentSearchTeamsBinding
 import com.example.minilivescore.presentation.base.BaseFragment
 import com.example.minilivescore.utils.Resource
@@ -40,14 +37,6 @@ class SearchTeamsFragment : BaseFragment<FragmentSearchTeamsBinding>(FragmentSea
 
         findNavController().navigate(action)
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecycleView()
@@ -55,7 +44,7 @@ class SearchTeamsFragment : BaseFragment<FragmentSearchTeamsBinding>(FragmentSea
     }
     private fun setupRecycleView() {
         binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = GridLayoutManager(requireContext(),2)
             adapter = this@SearchTeamsFragment.adapter
         }
     }

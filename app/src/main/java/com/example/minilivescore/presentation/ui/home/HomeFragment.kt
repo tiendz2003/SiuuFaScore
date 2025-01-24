@@ -1,4 +1,4 @@
-package com.example.minilivescore.presentation.ui
+package com.example.minilivescore.presentation.ui.home
 
 import android.os.Bundle
 import android.view.View
@@ -9,9 +9,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.example.minilivescore.databinding.FragmentHomeBinding
 import com.example.minilivescore.presentation.base.BaseFragment
-import com.example.minilivescore.presentation.ui.matches.MatchesFragment
-import com.example.minilivescore.presentation.ui.matches.MatchesViewModel
-import com.example.minilivescore.presentation.ui.standing.StandingFragment
+import com.example.minilivescore.presentation.ui.home.matches.MatchesFragment
+import com.example.minilivescore.presentation.ui.home.standing.StandingFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull

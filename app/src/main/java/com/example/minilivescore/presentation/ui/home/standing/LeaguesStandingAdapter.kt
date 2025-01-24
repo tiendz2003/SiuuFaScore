@@ -1,4 +1,4 @@
-package com.example.minilivescore.presentation.ui.standing
+package com.example.minilivescore.presentation.ui.home.standing
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -18,7 +18,6 @@ class LeaguesStandingAdapter(
    inner class ViewHolderLeague(private val binding :StandingLayoutItemBinding):RecyclerView.ViewHolder(binding.root) {
         fun bind(standing: LeaguesStanding.Standing.Table){
             binding.apply {
-                teamName.text = standing.team.tla
                 no.text = String.format(standing.position.toString())
                 played.text = String.format(standing.playedGames.toString())
                 wins.text = String.format(standing.won.toString())

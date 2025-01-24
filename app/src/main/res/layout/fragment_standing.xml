@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.ui.standing.StandingFragment">
+    tools:context=".presentation.ui.home.standing.StandingFragment">
 
    <include
        android:id="@+id/standing_header"
@@ -37,7 +37,9 @@
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:orientation="horizontal"
-             android:padding="8dp">
+             android:padding="8dp"
+             android:weightSum="8"
+             >
 
             <TextView
                 android:layout_width="30dp"
@@ -45,26 +47,28 @@
                 android:text="BXH"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_weight="1"/>
 
             <TextView
                 android:layout_width="31dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
+                android:layout_marginHorizontal="20dp"
                 android:text="CLB"
-                android:layout_marginStart="30dp"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_weight="1"/>
+                />
 
             <TextView
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
                 android:text="Vòng"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_weight="1"/>
 
             <TextView
                 android:layout_width="40dp"
@@ -73,7 +77,8 @@
                 android:layout_marginStart="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_weight="1"/>
 
             <TextView
                 android:layout_width="40dp"
@@ -81,7 +86,8 @@
                 android:text="Hòa"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_weight="1"/>
 
             <TextView
                 android:layout_width="40dp"
@@ -89,7 +95,8 @@
                 android:text="Thua"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_weight="1"/>
 
             <TextView
                 android:layout_width="40dp"
@@ -97,7 +104,8 @@
                 android:text="H/S"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_weight="1"/>
 
             <TextView
                 android:layout_width="40dp"
@@ -105,7 +113,8 @@
                 android:text="Điểm"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_weight="1"/>
          </LinearLayout>
 
          <!-- RecyclerView -->

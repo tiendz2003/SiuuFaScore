@@ -98,7 +98,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/homeTeamTextView"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_football" />
+        app:srcCompat="@drawable/icon_football"
+        />
 
     <ImageView
         android:id="@+id/awayTeam"
@@ -112,6 +113,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/scoreTextView"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_football" />
+        app:srcCompat="@drawable/icon_football"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

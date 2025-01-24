@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.minilivescore.databinding.ActivityFavouriteBinding
 import com.example.minilivescore.presentation.ui.favorite.FavoriteTeamAdapter
 import com.example.minilivescore.presentation.ui.favorite.FavoriteViewModel
+import com.example.minilivescore.presentation.ui.favorite.teammatches.TeamMatchesFragment
 import com.example.minilivescore.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -34,10 +35,22 @@ class FavouriteActivity : AppCompatActivity() {
 
     }
     private fun setupRecycleView(){
-        teamAdapter = FavoriteTeamAdapter()
+        teamAdapter = FavoriteTeamAdapter (onNotification = { teamId, enable ->
+            viewModel.toggleNotification(teamId,enable)
+            if(enable){
+                Toast.makeText(this@FavouriteActivity, "Đã bật nhận thông báo", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this@FavouriteActivity, "Đã hủy thông báo", Toast.LENGTH_SHORT).show()
+            }
+        },
+            onItemClicked = { teamId -> navigateToTeamMatches(teamId) }
+        )
         binding.favoriteTeamsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@FavouriteActivity)
             adapter = teamAdapter
+        }
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.getFavoriteTeam()
         }
     }
     private fun observeViewModel(){
@@ -47,10 +60,12 @@ class FavouriteActivity : AppCompatActivity() {
                   when(teams){
                       is Resource.Success -> {
                           binding.progressBar.visibility = View.GONE
+                          binding.swipeRefreshLayout.isRefreshing = false
                           teams.data?.let { teamAdapter.submitList(it) }?:showToast("Chưa có đội bóng yêu thích")
                       }
                       is Resource.Error -> {
                           binding.progressBar.visibility = View.GONE
+                          binding.swipeRefreshLayout.isRefreshing = false
                           teams.message?.let { showToast(it) }
                       }
                       is Resource.Loading -> binding.progressBar.visibility = View.VISIBLE
@@ -62,5 +77,17 @@ class FavouriteActivity : AppCompatActivity() {
 
     private fun showToast(it: String) {
         Toast.makeText(this, it, Toast.LENGTH_LONG, ).show()
+    }
+    private fun navigateToTeamMatches(teamId: String) {
+        val  teamMatchesFragment = TeamMatchesFragment.newInstance(teamId)
+        supportFragmentManager.beginTransaction()
+            .setReorderingAllowed(true)
+            .setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.fade_out,  // Animation khi fragment cũ ra
+            )
+            .replace(R.id.frame,teamMatchesFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

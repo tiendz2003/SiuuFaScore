@@ -1,4 +1,4 @@
-package com.example.minilivescore.presentation.ui.matches
+package com.example.minilivescore.presentation.ui.home.matches
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +11,10 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.minilivescore.data.model.football.LeagueMatches
 import com.example.minilivescore.databinding.ItemMatchBinding
 import com.example.minilivescore.utils.Preferences
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 class MatchesAdapter(
     private val request: RequestManager,
-    private val onItemClick:(LeagueMatches.Matche) ->  Unit
+    private val onItemClick:(LeagueMatches.Matche,View) ->  Unit
 ):ListAdapter<LeagueMatches.Matche, MatchesAdapter.MatchViewHolder> (MatchDiffCallBack()){
    inner class MatchViewHolder(private val binding: ItemMatchBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(match: LeagueMatches.Matche){
@@ -45,6 +42,8 @@ class MatchesAdapter(
                     match.score.fullTime?.home == null -> time
                     else -> "${match.score.fullTime.home} - ${match.score.fullTime.away}"
                 }
+                 scoreTextView.transitionName = "score_${match.id}"
+
                 request.load(match.homeTeam.crest)
                     .fitCenter()
                     .transition(DrawableTransitionOptions.withCrossFade())
@@ -53,9 +52,13 @@ class MatchesAdapter(
                     .fitCenter()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(awayTeam)
+
                 itemView.setOnClickListener {
                     it.isEnabled = false
-                    onItemClick(match)
+                    //Tạo extra cho shared element
+                    /*   homeTeam to "hometeam_${match.id}"
+                       awayTeam to "awayteam_${match.id}"*/
+                    onItemClick(match,scoreTextView)
                     it.postDelayed({it.isEnabled = true},500)
                 }
                 Preferences.setFontStyle(statusStart)

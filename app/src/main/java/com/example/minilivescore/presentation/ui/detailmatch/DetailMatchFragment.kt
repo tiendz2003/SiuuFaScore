@@ -1,9 +1,9 @@
     package com.example.minilivescore.presentation.ui.detailmatch
 
+    import android.graphics.Color
     import android.net.Uri
     import android.os.Bundle
     import android.util.Log
-    import androidx.fragment.app.Fragment
     import android.view.LayoutInflater
     import android.view.View
     import android.view.ViewGroup
@@ -11,32 +11,27 @@
     import androidx.appcompat.widget.Toolbar
     import androidx.fragment.app.viewModels
     import androidx.lifecycle.lifecycleScope
-    import androidx.navigation.fragment.findNavController
     import androidx.navigation.fragment.navArgs
-    import androidx.recyclerview.widget.LinearLayoutManager
     import com.amazonaws.ivs.player.Player
     import com.amazonaws.ivs.player.PlayerException
-    import com.example.minilivescore.MainActivity
     import com.example.minilivescore.R
     import com.example.minilivescore.data.model.football.FavoriteTeam
     import com.example.minilivescore.data.model.football.LeagueMatches
-    import com.example.minilivescore.databinding.FragmentDetailMatchBinding
-    import com.example.minilivescore.domain.repository.FavoriteTeamRepository
     import com.example.minilivescore.extension.loadImage
     import com.example.minilivescore.presentation.base.BaseFragment
+    import com.example.minilivescore.databinding.FragmentDetailMatchBinding
     import com.example.minilivescore.presentation.ui.detailmatch.comment.BottomSheetFragment
     import com.example.minilivescore.presentation.ui.detailmatch.comment.CommentAdapter
-    import com.example.minilivescore.presentation.ui.searchteam.SearchTeamsFragmentDirections
     import com.example.minilivescore.utils.Preferences
     import com.example.minilivescore.utils.Resource
     import com.google.android.material.bottomnavigation.BottomNavigationView
+    import com.google.android.material.transition.MaterialContainerTransform
     import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
     import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
     import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
     import dagger.hilt.android.AndroidEntryPoint
-    import kotlinx.coroutines.flow.collectLatest
     import kotlinx.coroutines.launch
-    import javax.inject.Inject
+
 
     @AndroidEntryPoint
     class DetailMatchFragment : BaseFragment<FragmentDetailMatchBinding>(FragmentDetailMatchBinding::inflate) {
@@ -44,9 +39,22 @@
         private lateinit var matches: LeagueMatches.Matche
         private var player: Player?= null
         private lateinit var commentAdapter: CommentAdapter
-        @Inject lateinit var favRepository: FavoriteTeamRepository
+        private lateinit var favTeam: FavoriteTeam
+        private lateinit var favTeam1: FavoriteTeam
         private val viewModel by viewModels<MatchDetailViewModel>()
-
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            sharedElementEnterTransition = MaterialContainerTransform().apply {
+                duration = 500
+                fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
+                scrimColor = Color.TRANSPARENT
+            }
+            sharedElementReturnTransition = MaterialContainerTransform().apply {
+                duration = 300
+                fadeMode = MaterialContainerTransform.FADE_MODE_THROUGH
+                scrimColor = Color.TRANSPARENT
+            }
+        }
         override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -61,8 +69,9 @@
             super.onViewCreated(view, savedInstanceState)
             setupNavigation(false)
             updateUI()
-           // val playbackUrl = " https://fcc3ddae59ed.us-west-2.playback.live-video.net/api/video/v1/us-west-2.893648527354.channel.DmumNckWFTqz.m3u8"
             setupPLayer()
+            getFavButtonState()
+
             lifecycle.addObserver(binding.youtubePlayerView)
             observeViewModel()
             val homeTeam = matches.homeTeam.shortName
@@ -72,13 +81,27 @@
 
         }
 
+        private fun getFavButtonState() {
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.getFav(favTeam.id).collect { isFavorite ->
+                    binding.btnFav1.isSelected = isFavorite
+                }
+            }
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.getFav(favTeam1.id).collect { isFavorite ->
+                    binding.btnFav2.isSelected = isFavorite
+                }
+            }
+        }
 
 
         private fun updateUI(){
 
             matches =args.match
-            val favTeam = FavoriteTeam(matches.homeTeam.id.toString(),matches.homeTeam.shortName,matches.homeTeam.crest)
+             favTeam = FavoriteTeam(matches.homeTeam.id.toString(),matches.homeTeam.shortName,matches.homeTeam.crest)
+             favTeam1 = FavoriteTeam(matches.awayTeam.id.toString(),matches.awayTeam.shortName,matches.awayTeam.crest)
             val time = Preferences.setupTime(matches.utcDate)
+
             observeStreamUrl(matches.id)
             viewModel.getComments(matches.id.toString())
             Log.d("Match","${matches.id}")
@@ -89,9 +112,39 @@
                 matches.score.fullTime?.home == null -> time
                 else -> "${matches.score.fullTime?.home} - ${matches.score.fullTime?.away}"
             }
-            binding.homeTeamLogo.setOnClickListener {
-                viewModel.addFavoriteTeam(favTeam)
-                Toast.makeText(context, "Đã thêm ${matches.homeTeam.shortName} vào đội yêu thích", Toast.LENGTH_SHORT).show()
+            //tạo 1 lambda tránh mã lặp
+            val favClicklistener:(View,FavoriteTeam) ->Unit = {button,favTeam ->
+                val newState = handleFavoriteButton(button,favTeam,viewModel::toggleFavTeam)
+                viewModel.saveFavoriteState(favTeam.id,newState)
+            }
+            binding.apply {
+                btnFav1.setOnClickListener { favClicklistener(btnFav1,favTeam) }
+                btnFav2.setOnClickListener { favClicklistener(btnFav2,favTeam1) }
+                /*
+                btnFav1.setOnClickListener {
+                    viewModel.saveFavoriteState(
+                        favTeam.id,
+                        !btnFav1.isSelected
+                    )
+                handleFavoriteButton(
+                      btnFav1,
+                      favTeam,
+                      viewModel::toggleFavTeam,
+                     // viewModel::deleteFavoriteTeam
+                  )
+                }
+                btnFav2.setOnClickListener {
+                    viewModel.saveFavoriteState(
+                        favTeam1.id,
+                        !btnFav2.isSelected
+                    )
+                   handleFavoriteButton(
+                        btnFav2,
+                        favTeam1,
+                       viewModel::toggleFavTeam,
+                       // viewModel::deleteFavoriteTeam
+                    )
+                }*/
             }
             binding.homeTeamLogo.loadImage(matches.homeTeam.crest)
             binding.awayTeamLogo.loadImage(matches.awayTeam.crest)
@@ -99,6 +152,7 @@
                 navigationToBottomSheet(matches.id.toString())
             }
             binding.logoLeague.loadImage(matches.competition.emblem)
+            binding.matchScore.transitionName = "score_${matches.id}"
             Preferences.setFontStyle(binding.matchScore)
             Preferences.setFontStyle(binding.homeTeamName)
             Preferences.setFontStyle(binding.awayTeamName)
@@ -109,6 +163,29 @@
             Preferences.updateTextColorBasedOnGradient(binding.homeTeamScore,binding.homeTeamName)
 
         }
+
+        //Great code should be learn it
+        private fun handleFavoriteButton(
+            button: View,
+            team: FavoriteTeam,
+            onToggleFav: (FavoriteTeam,Boolean) -> Unit,
+           // onDelete: (String) -> Unit
+        ):Boolean{
+
+            //Đảo ngược lại trang thái của nút
+            val newState =  !button.isSelected
+            //Cập nhật UI
+            button.isSelected = newState
+            //Xử lý logic thêm xóa
+            if (newState) {
+                Toast.makeText(button.context, "Đã thêm ${team.name} vào đội yêu thích", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(button.context, "Đã xóa ${team.name} từ đội yêu thích", Toast.LENGTH_SHORT).show()
+            }
+            onToggleFav(team,newState)
+            return newState
+        }
+
         private fun navigationToBottomSheet(matchId: String){
             val bottomSheetFragment = BottomSheetFragment()
             val bundle = Bundle().apply {
@@ -117,12 +194,12 @@
             bottomSheetFragment.arguments = bundle
             bottomSheetFragment.show(childFragmentManager,bottomSheetFragment.tag)
         }
-        private fun observeViewModel(){
-            viewModel.highlightState.observe(viewLifecycleOwner){state ->
+        private fun observeViewModel() {
+            viewModel.highlightState.observe(viewLifecycleOwner) { state ->
                 when (state) {
                     is Resource.Loading -> showLoading()
                     is Resource.Success -> state.data?.let { showVideo(it) }
-                    is Resource.Error -> Log.d("detail","${state.message}")
+                    is Resource.Error -> Log.d("detail", "${state.message}")
                 }
 
             }
@@ -190,7 +267,6 @@
 
         override fun onDestroyView() {
             super.onDestroyView()
-
             //loại bỏ tham chiếu khi fragmemt bị hủy
             val youtubePlayerView: YouTubePlayerView? = view?.findViewById(R.id.youtube_player_view)
             youtubePlayerView?.release()

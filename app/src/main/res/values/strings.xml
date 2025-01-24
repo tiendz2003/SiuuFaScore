@@ -19,7 +19,7 @@
     <string name="signup_text">Đăng ký</string>
     <string name="login_button_text">Đăng nhập</string>
     <string name="password_hint">Nhập mât khẩu\n</string>
-    <string name="default_web_client_id" >
+    <string name="default_web_client_id">
        650967418124-4iteudc8f8fuvj3rsmc0pul3h1r38o4e.apps.googleusercontent.com
     </string>
     <string name="user_avatar">name_user\n</string>

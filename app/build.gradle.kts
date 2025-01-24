@@ -67,7 +67,7 @@ android {
     }
     buildFeatures {
         buildConfig = true
-        viewBinding =  true
+       viewBinding = true
 
     }
     composeOptions {
@@ -82,6 +82,12 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.navigation.fragment)
+    kapt ("androidx.hilt:hilt-compiler:1.2.0")
+    val work_version = "2.9.1"
+    implementation ("androidx.work:work-runtime-ktx:$work_version")
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-auth")

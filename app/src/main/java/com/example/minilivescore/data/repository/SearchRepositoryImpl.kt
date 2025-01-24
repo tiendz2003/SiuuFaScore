@@ -1,15 +1,13 @@
-package com.example.minilivescore.domain.repository
+package com.example.minilivescore.data.repository
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.minilivescore.data.database.LiveScoreDao
 import com.example.minilivescore.data.model.football.CoachEntity
 import com.example.minilivescore.data.model.football.PlayerEntity
 import com.example.minilivescore.data.model.football.TeamEntity
 import com.example.minilivescore.data.model.football.TeamWithDetails
 import com.example.minilivescore.data.networking.LiveScoreService
-import com.example.minilivescore.presentation.ui.searchteam.SearchTeamViewModel
+import com.example.minilivescore.domain.repository.SearchRepository
 import com.example.minilivescore.utils.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -21,17 +19,17 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SearchRepository @Inject constructor(
+class SearchRepositoryImpl @Inject constructor(
     private val liveScoreApiService: LiveScoreService,
     private val livescoreDao:LiveScoreDao
-) {
+): SearchRepository {
     private val leagues = listOf("PL", "SA", "PD")
 
     //xóa cache sau 24h
     private val CACHE_DURATION_CLEAN = TimeUnit.HOURS.toMillis(24)
 
     //Tìm kiếm theo tên đội bóng
-    suspend fun searchTeam(query: String): Resource<List<TeamEntity>> {
+    override suspend fun searchTeam(query: String): Resource<List<TeamEntity>> {
         return withContext(Dispatchers.IO) {
             try {
                 updateCache()
@@ -45,7 +43,7 @@ class SearchRepository @Inject constructor(
     }
 
     //Thông tin cho tiết đội bóng
-    suspend fun getTeamDetails(teamId: Int): Resource<TeamWithDetails> {
+    override suspend fun getTeamDetails(teamId: Int): Resource<TeamWithDetails> {
         return withContext(Dispatchers.IO) {
             try {
 
@@ -225,16 +223,3 @@ class SearchRepository @Inject constructor(
 }
 
 
-
-class TeamViewModelFactory(
-    private val repository: SearchRepository
-) : ViewModelProvider.Factory {
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SearchTeamViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return SearchTeamViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}

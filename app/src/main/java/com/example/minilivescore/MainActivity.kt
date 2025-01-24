@@ -1,17 +1,20 @@
 package com.example.minilivescore
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.minilivescore.databinding.SharedActivityLayoutBinding
-import com.example.minilivescore.domain.repository.AuthRepository
-import com.example.minilivescore.presentation.ui.matches.MatchesViewModel
+import com.example.minilivescore.data.repository.AuthRepository
+import com.example.minilivescore.presentation.ui.home.MatchesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -23,6 +26,14 @@ class MainActivity : AppCompatActivity() {
     lateinit var authRepository: AuthRepository
     private val viewModel by viewModels<MatchesViewModel>()
 
+    private val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ){isGranted:Boolean->
+        if(isGranted){
+            LiveScoreMiniApplication.scheduleMatchNotificationWorker(this)
+        }
+
+    }
     override fun onStart() {
         super.onStart()
         checkLogin()
@@ -34,10 +45,14 @@ class MainActivity : AppCompatActivity() {
         //phải gọi trước setContentView
         val splashScreen =installSplashScreen()
         enableEdgeToEdge()
-        val windowInsetsController = window.insetsController
-        windowInsetsController?.hide(WindowInsets.Type.statusBars())
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            if(checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
+                requestPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+
         splashScreen.setKeepOnScreenCondition{
-            viewModel.currentMatchday.value == null
+            viewModel.matchday.value == null
         }
         binding = SharedActivityLayoutBinding.inflate(layoutInflater)
         // Kiểm soát thời gian hiển thị của splash screen
@@ -83,6 +98,8 @@ class MainActivity : AppCompatActivity() {
     }
     //Cập nhật UI cho từng giải đấu
     private fun fetchCurrentLeagueUI(leagueCode: String) {
+
+
         viewModel.apply {
             setCurrentLeague(leagueCode)
             getStandingLeagues(leagueCode)

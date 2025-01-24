@@ -16,9 +16,7 @@ import androidx.room.util.query
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.minilivescore.data.database.AppDatabase
 import com.example.minilivescore.domain.repository.SearchRepository
-import com.example.minilivescore.domain.repository.TeamViewModelFactory
 import com.example.minilivescore.databinding.ActivitySearchBinding
-import com.example.minilivescore.presentation.ui.searchteam.SearchTeamViewModel
 import com.example.minilivescore.presentation.ui.searchteam.SearchTeamsFragment
 import com.example.minilivescore.utils.LiveScoreMiniServiceLocator
 import com.google.android.material.tabs.TabLayoutMediator
@@ -36,12 +34,6 @@ class SearchActivity : AppCompatActivity() {
     @Inject lateinit var database: AppDatabase
     private val teamDao by lazy {
         database.LiveScoreDao()
-    }
-    val repository by lazy {
-        SearchRepository(
-            liveScoreApiService = LiveScoreMiniServiceLocator.liveScoreApiService,
-            livescoreDao = teamDao
-        )
     }
 /*
     private val viewModel: SearchTeamViewModel by viewModels {

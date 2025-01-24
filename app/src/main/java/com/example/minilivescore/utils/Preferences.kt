@@ -1,5 +1,6 @@
 package com.example.minilivescore.utils
 
+import android.content.Context
 import android.graphics.Color
 import android.widget.TextView
 import android.graphics.Typeface
@@ -8,8 +9,12 @@ import android.graphics.drawable.GradientDrawable
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import com.example.minilivescore.R
+import dagger.hilt.android.qualifiers.ApplicationContext
+import java.time.Duration
+import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -56,6 +61,11 @@ object Preferences {
         val dateFormatter = date.format(formatter)
         return dateFormatter
     }
+    fun difTime(utcDate:String):Duration{
+        val now = ZonedDateTime.now(ZoneId.of("UTC"))
+        val matchTime = ZonedDateTime.parse(utcDate)
+        return Duration.between(now,matchTime)
+    }
     private fun getAverageColorFromGradient(gradientDrawable: GradientDrawable): Int {
         // Lấy danh sách màu từ GradientDrawable (nếu có)
         val gradientColors = gradientDrawable.colors
@@ -96,6 +106,15 @@ object Preferences {
     private fun isColorDark(color: Int): Boolean {
         val darkness = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255
         return darkness >= 0.5
+    }
+    fun showAlert(@ApplicationContext context: Context,message: String) {
+        AlertDialog.Builder(context)
+            .setTitle("Thông báo")
+            .setMessage(message)
+            .setIcon(R.drawable.premier_league_idhcr6mt55_6)
+            .setPositiveButton("Đóng") { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
     }
 
 }

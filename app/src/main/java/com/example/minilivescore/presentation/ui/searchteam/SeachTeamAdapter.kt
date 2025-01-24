@@ -17,7 +17,7 @@ class SearchTeamAdapter(
     inner class TeamViewHolder(private val binding:ItemTeamBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(team: TeamEntity){
             binding.apply {
-                tvNameClub.text = team.name
+                tvNameClub.text = team.shortName
                  request.load(team.crest)
                    .fitCenter()
                    .transition(DrawableTransitionOptions.withCrossFade())

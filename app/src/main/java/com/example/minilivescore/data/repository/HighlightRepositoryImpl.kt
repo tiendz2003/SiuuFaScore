@@ -1,20 +1,19 @@
-package com.example.minilivescore.domain.repository
+package com.example.minilivescore.data.repository
 
 import android.util.Log
 import com.example.minilivescore.data.networking.YouTubeApiService
+import com.example.minilivescore.domain.repository.HighlightRepository
 import com.example.minilivescore.utils.Resource
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.Date
 import javax.inject.Inject
 
-class HighlightRepository @Inject constructor(
+class HighlightRepositoryImpl @Inject constructor(
     private val youTubeApiService: YouTubeApiService
-){
+): HighlightRepository {
 
     //Learn and train.this is nice code
-    suspend fun findVideoInList(videoTitle: String): Resource<String?> = withContext(Dispatchers.IO) {
+   override suspend fun findVideoInList(videoTitle: String): Resource<String?> = withContext(Dispatchers.IO) {
         try {
             var nextPageToken: String? = null
             val playListId = "PLiaWrX4zmrTmVTbQGnQv2FQQ3h09Kk5_K"

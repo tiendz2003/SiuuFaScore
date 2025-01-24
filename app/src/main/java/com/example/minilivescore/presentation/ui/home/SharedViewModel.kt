@@ -1,4 +1,4 @@
-package com.example.minilivescore.presentation.ui.matches
+package com.example.minilivescore.presentation.ui.home
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.minilivescore.data.model.football.LeagueMatches
 import com.example.minilivescore.data.model.football.LeaguesStanding
+import com.example.minilivescore.data.repository.MatchRepositoryImpl
 import com.example.minilivescore.domain.repository.MatchRepository
 import com.example.minilivescore.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,11 +23,15 @@ class MatchesViewModel @Inject constructor (
     private val repository: MatchRepository,
     private val savedStateHandle: SavedStateHandle
 ):ViewModel(){
-
+    companion object{
+        private const val MAX_MATCHDAY = 38
+        private const val MIN_MATCHDAY = 1
+        private const val DEFAULT_LEAGUE = "PL"
+        private const val KEY_CURRENT_LEAGUE = "currentLeague"
+        private const val KEY_SELECTED_MATCHDAY = "selectedMatchday"
+    }
     private val _matches = MutableLiveData<Resource<LeagueMatches>>()
     val matches :LiveData<Resource<LeagueMatches>> = _matches
-
-
 
     private var _currentLeague =  savedStateHandle.getStateFlow("currentLeague", "PL")
     val currentLeague :StateFlow<String> = _currentLeague
@@ -51,19 +56,6 @@ class MatchesViewModel @Inject constructor (
 
     private val _matchError = MutableStateFlow<String?>(null)
     val matchError: StateFlow<String?> = _matchError
-    /*init {
-        viewModelScope.launch {
-            repeat(5){
-                val result = kotlin.runCatching {
-                    repository.getLeagueMatches(
-                        "PL",9
-                    )
-                }
-                println("result = $result")
-            }
-        }
-        Log.d("Total","${_totalMatchdays.value}")
-    }*/
     private val _selectedMatchday = savedStateHandle.getStateFlow("selectedMatchday", 0)
     val selectedMatchday: StateFlow<Int> = _selectedMatchday
 
@@ -79,9 +71,7 @@ class MatchesViewModel @Inject constructor (
                 }
             }
         }
-        viewModelScope.launch {
 
-        }
 
     }
     private fun selectedMatchday(matchday:Int){
@@ -93,19 +83,19 @@ class MatchesViewModel @Inject constructor (
         viewModelScope.launch {
             _matches.value = Resource.Loading()
             try {
-                val result = repository.getLeagueMatches(leagueCode, count ?: _matchday.value ?: 1)
+                // Bây giờ mới fetch matches với matchday đã có
+                val result = repository.getLeagueMatches(
+                    leagueCode,
+                    count ?: _matchday.value ?: _currentMatchday.value ?: 1
+                )
                 _matches.value = result
 
                 if (result is Resource.Success) {
                     result.data?.let { leagueMatches ->
-
                         _currentMatchday.value = leagueMatches.matches.firstOrNull()?.season?.currentMatchday
-                        if (count == null && _matchday.value == null) {
-                            _matchday.value = _currentMatchday.value
-                        } else if (count != null) {
+                        if (count != null) {
                             _matchday.value = count
                         }
-
                     }
                 } else if (result is Resource.Error) {
                     _matchError.value = result.message
@@ -120,7 +110,7 @@ class MatchesViewModel @Inject constructor (
     fun incrementMatchday() {
         _matchday.value?.let { currentMatchday ->
             when{
-                currentMatchday <38 -> selectedMatchday(currentMatchday + 1)
+                currentMatchday <MAX_MATCHDAY -> selectedMatchday(currentMatchday + 1)
                 else -> _matchError.value = "Đã đến vòng đấu cuối"
             }
         }
@@ -128,7 +118,7 @@ class MatchesViewModel @Inject constructor (
     fun decrementMatchday() {
         _matchday.value?.let { currentMatchday ->
             when{
-                currentMatchday >1 -> selectedMatchday(currentMatchday - 1)
+                currentMatchday > MIN_MATCHDAY -> selectedMatchday(currentMatchday - 1)
                 else -> _matchError.value = "Đã đến vòng đấu đầu tiên"
             }
         }
@@ -146,12 +136,11 @@ class MatchesViewModel @Inject constructor (
     fun getStandingLeagues(id:String){
         viewModelScope.launch {
             try {
-                val response = repository.getStandingLeagues(id)
-                if(response.isSuccessful){
-                    val data = response.body()
-                    _standingLeagues.value = Resource.Success(data)
+                val result = repository.getStandingLeagues(id)
+                if(result is Resource.Success){
+                    _standingLeagues.value = Resource.Success(result.data)
                 }else{
-                    _error.value = "Error : ${response.code()}"
+                    _error.value = "Error : ${result.message}"
                 }
             }catch (e:Exception){
                 _standingLeagues.value = Resource.Error(e.message?:"Đã xảy ra lỗi")
