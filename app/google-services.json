@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "650967418124-oolejdlthcqfrcfhcfg9j6jdqp2kt0re.apps.googleusercontent.com",
+          "client_id": "",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.minilivescore",
@@ -22,20 +22,20 @@
           }
         },
         {
-          "client_id": "650967418124-klsimoo86st078o7c0n3bkg3sm89hk18.apps.googleusercontent.com",
+          "client_id": "",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCfJn2M8PoRUDGWgmTCMzwXBlXPBq4cjD4"
+          "current_key": ""
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "650967418124-4iteudc8f8fuvj3rsmc0pul3h1r38o4e.apps.googleusercontent.com",
+              "client_id": "",
               "client_type": 3
             }
           ]
