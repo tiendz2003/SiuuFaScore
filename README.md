@@ -1,38 +1,31 @@
 # SiuuFaScoreApp
 
-This is a simple Sofascore app for Android devices. It allows users to explore sports matches, view team details, tournament
-standings, and player information. It integrates with the Sofascore Demo API to fetch data for https://www.football-data.org/
-Premier League,SeriA,Laliga.
+SiuuFaScoreApp(Mini-Sofascore) là một ứng dụng hiển thị lịch thi đấu bóng đá dành cho Android. Ứng dụng cho phép người dùng theo dõi các trận đấu, xem thông tin đội bóng, bảng xếp hạng giải đấu và chi tiết cầu thủ. Dữ liệu được lấy từ API Sofascore Demo, hỗ trợ các giải đấu như Premier League, Serie A và La Liga.
 
-My project is not complete.But in few months,i will trying to complete it.So stay tuned 🥰🥰🥰
+Hiện tại, dự án chưa hoàn thành, nhưng trong vài tháng tới, mình sẽ cố gắng hoàn thiện nó. Hãy đón chờ nhé! 🥰🥰🥰(Update:Đã hoàn thành hí hí ^^)
 
-## Features
+## **⚽ Tính Năng Chính**
+- 📅 **Lịch thi đấu**: Xem các trận đấu sắp diễn ra và kết quả các trận đấu đã diễn ra của Premier League, Serie A và La Liga theo từng vòng đấu (38 vòng đấu).
+- 🏟️ **Thông tin đội bóng**: Xem thông tin chi tiết về đội bóng như tên, logo, quốc gia và danh sách cầu thủ hiện tại.
+- 📊 **Bảng xếp hạng giải đấu**: Cập nhật thứ hạng các đội bóng trong từng giải đấu.
+- 👥 **Thông tin cầu thủ**: Xem chi tiết cầu thủ bao gồm tên, vị trí, quốc tịch và thống kê.
+- 🎥 **Xem Highlight**: Xem video tổng hợp các trận đấu thông qua YouTube Data API v3.
+- 🎥 **Xem Livestream**: Xem trực tiếp các trận đấu (thực ra mình chỉ mô tả và triển khai lại cách thức livestream của mấy app lậu xem không cổ xúy nhé kk)
 
-The app includes the following features:
+## **🛠 Công Nghệ Sử Dụng**
+- **Retrofit** - Gửi yêu cầu API và xử lý dữ liệu phản hồi.
+- **Glide** - Tải và lưu trữ ảnh.
+- **Android Architecture Components (MVVM)** - Quản lý dữ liệu và vòng đời ứng dụng.
+- **Material Design Components** - Thiết kế giao diện người dùng.
 
-* Sports Matches: Users can view upcoming and past matches for football(PL,SERIA,LALIGA)
-  for the each round/38 rounds 
-* Team Details: Users can explore team information, including their name, logo, country, and current players.
-* Tournament Standings: Users can check tournament standings for various leagues and competitions.
-* Player Details: Users can access detailed information about players, including their name, position, nationality, and statistics.
-* You can also watch the highlights for each of match from Youtube data api v3
-
-## Technologies Used
-
-This app was built using the following technologies:
-
-* Retrofit for making API requests
-* Glide for loading and caching images
-* Android Architecture Components (MVVM) for managing data
-* Material Design components for UI design
-
-
-## ScreenShot
-<img src="https://github.com/user-attachments/assets/af855f52-0725-4903-b02e-fceaa857a8ec" width="300" height="500" />
-<img src="https://github.com/user-attachments/assets/c6d37a45-301a-4fd2-9764-373eff2d44ed" width="300" height="500" />
-<img src="https://github.com/user-attachments/assets/711547fe-b4ac-4dfa-a02d-31a294afdca5" width="300" height="500" />
-
-
-
-
-
+## **📸 Hình Ảnh Minh Họa**
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/6d4ff08b-d7db-4978-942d-d11075e1b762" width="30%" />
+  <img src="https://github.com/user-attachments/assets/33bc56df-47df-4457-b96a-441d6f9e5e7c" width="30%" />
+  <img src="https://github.com/user-attachments/assets/ae70c825-cffc-4b65-ba30-138073d94476" width="30%" />
+</p>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/6bacb01a-fde9-43f7-89a8-0c9baa9ab6ca" width="30%" />
+  <img src="https://github.com/user-attachments/assets/e93a9448-b7df-40db-a8ea-0c302b10ef98" width="30%" />
+  <img src="https://github.com/user-attachments/assets/7aa39923-6776-4368-92dc-2da2cc03d7b1" width="30%" />
+</p>
